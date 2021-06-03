@@ -36,3 +36,7 @@ function updateResults() {
 function searchProducts() {
 
 }
+
+function getProduct() {
+
+}
