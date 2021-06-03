@@ -1,3 +1,7 @@
+/*
+Author: Eldar
+*/
+
 const cart = [];
 const favorites = [];
 
