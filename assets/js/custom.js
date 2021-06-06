@@ -17,18 +17,6 @@ let temp_flag = false;
 let amount = 0;
 
 function addToCart(product) {
-    try {
-        if(cart.indexOf(products[product]) >= 0) throw `${products[product].pname} already added to cart.`;
-        if (products[product] == undefined || products[product] == "" || products[product] == null) throw "Product doesn't exist1";
-        if (product > products.length - 1) throw "Product doesn't exist";
-    } catch(err) {
-        if (err !== "") {
-            console.log(`Error: ${err}`);  
-            callToast(`Error: ${err}`); 
-            return;
-        }
-    }
-    if (cart.indexOf(products[product]) == -1) {
         amount = Number(document.getElementById(`_amount${product}`).value); 
         for (let i = 0; i < amount; i++) {
             cart.push(products[product]);
@@ -36,24 +24,10 @@ function addToCart(product) {
         }
         console.log("ADD TO CART SUCCESS" + amount);
         callToast("ADD TO CART SUCCESS" + amount);
-    }
     updatePage(); 
 }
 
 function removeFromCart(product) {
-    try {
-        if(cart.indexOf(products[product]) == -1) throw `${products[product].pname} is not in cart`;
-        if (products[product] == undefined || products[product] == "" || products[product] == null) throw "Product doesn't exist1";
-        if (product > products.length - 1) throw "Product doesn't exist";
-    } catch(err) { 
-        if (err !== "") {
-            console.log(`Error: ${err}`);   
-            callToast(`Error: ${err}`);
-            return;
-        }
-    } 
-
-    if (cart.indexOf(products[product]) !== -1) {
         amount = Number(document.getElementById(`_amount${product}`).value);
         product = cart.indexOf(products[product]);
         for (let i = 0; i < amount; i++) {
@@ -65,24 +39,10 @@ function removeFromCart(product) {
         }    
             console.log("REMOVE FROM CART SUCCESS" + amount);
             callToast("REMOVE FROM CART SUCCESS" + amount);
-    } else {
-        console.log("REMOVE FROM CART FAILED");
-        callToast("REMOVE FROM CART FAILED");
-    }
     updatePage();
 }
 
 function addToFavorites(product) {
-    try {
-        if (products[product] == undefined || products[product] == "" || products[product] == null) throw "Product doesn't exist1";
-        if (product > products.length - 1) throw "Product doesn't exist";
-    } catch(err) {
-        if (err !== "") {
-            console.log(`Error: ${err}`);  
-            callToast(`Error: ${err}`); 
-            return;
-        }
-    }
     if (favorites.indexOf(products[product]) == -1) { 
         favorites.push(products[product]);
         favoritesCount++;
@@ -96,28 +56,12 @@ function addToFavorites(product) {
 }
 
 function removeFromFavorites(product) {
-    try {
-        if (products[product] == undefined || products[product] == "" || products[product] == null) throw "Product doesn't exist1";
-        if (product > products.length - 1) throw "Product doesn't exist";
-    } catch(err) {
-        if (err !== "") {
-            console.log(`Error: ${err}`); 
-            callToast(`Error: ${err}`);  
-            return;
-        }
-    } 
-
-    if (favorites.indexOf(products[product]) !== -1) {
         product = favorites.indexOf(products[product]);
         console.log(product);
         favorites.splice(product, 1);
         console.log("REMOVE FROM FAVORITES SUCCESS");
         callToast("REMOVE FROM FAVORITES SUCCESS");
         favoritesCount--;
-    } else {
-        console.log("REMOVE FROM FAVORITES FAILED");
-        callToast("REMOVE FROM FAVORITES FAILED");
-    }
     updatePage();
 }
 
@@ -131,7 +75,6 @@ function inFavorite(product) {
 
 function updatePage() {
     let FavoritesCheck;
-    let CartCheck;
     _res.innerHTML = "";
     _carticon.innerHTML = cartCount;
     _favoritesicon.innerHTML = favoritesCount;
@@ -141,11 +84,6 @@ function updatePage() {
         } else {
             FavoritesCheck = `<li><a class="btn btn-success text-white"><i onclick="addToFavorites(${products[i].id})" class="far fa-heart"></i></a></li>`;
         }
-        if (inCart(i)) {
-            CartCheck = `<li><a class="btn btn-danger text-white mt-2"><i onclick="removeFromCart(${products[i].id})" class="fas fa-minus-square"></i></a></li>`;
-        } else {
-            CartCheck = `<li><a class="btn btn-success text-white mt-2"><i onclick="addToCart(${products[i].id})" class="fas fa-cart-plus"></i></a></li>`;
-        }
         _res.innerHTML += `<div class="col-md-4">
         <div class="card mb-4 product-wap rounded-0">
             <div class="card rounded-0">
@@ -153,7 +91,6 @@ function updatePage() {
                 <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                     <ul class="list-unstyled">
                         ${FavoritesCheck}
-                        ${CartCheck}
                         <li><input class="__amount" id="_amount${products[i].id}" type="number" value="1" placeholder="Amount"></li>
                         <li><a class="btn btn-success text-white mt-2"><i onclick="addToCart(${products[i].id})" class="fas fa-plus-square"></i></a></li>
                         <li><a class="btn btn-danger text-white mt-2"><i onclick="removeFromCart(${products[i].id})" class="fas fa-minus-square"></i></a></li>
