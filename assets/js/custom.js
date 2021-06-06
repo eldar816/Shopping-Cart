@@ -3,9 +3,9 @@ Author: Eldar
 */
 
 const products = [
-    {id : 0, pname : "Product1", price : 50, sizes : "S/M/L/XL/XXL", description : "test1", stars : 4, in_cart : false, in_favorites : false}, 
-    {id : 1, pname : "Product2", price : 100, sizes : "L/XL/XXL", description : "test2", stars : 3, in_cart : false, in_favorites : false}, 
-    {id : 2, pname : "Product3", price : 150, sizes : "L/XXL", description : "test3", stars : 5, in_cart : false, in_favorites : false}
+    {id : 0, pname : "Product1", price : 50, sizes : "S/M/L/XL/XXL", description : "test1", stars : 4, in_cart : false, in_favorites : false, amount : 0}, 
+    {id : 1, pname : "Product2", price : 100, sizes : "L/XL/XXL", description : "test2", stars : 3, in_cart : false, in_favorites : false, amount : 0}, 
+    {id : 2, pname : "Product3", price : 150, sizes : "L/XXL", description : "test3", stars : 5, in_cart : false, in_favorites : false, amount : 0}
 ];
 
 const storage = ['cart', 'favorites'];
@@ -19,23 +19,47 @@ let temp_flag = false;
 let amount = 0;
 
 function addToCart(product) {
-        amount = Number(document.getElementById(`_amount${product}`).value); 
-        for (let i = 0; i < amount; i++) {
+        let temp = cart.indexOf(products[product]);
+        amount = Number(document.getElementById(`_amount${product}`).value);
+        console.log(product);
+        console.log(temp);
+        if (temp == -1) {
             cart.push(products[product]);
-            cartCount++;
+            temp = cart.indexOf(products[product]);
+            console.log(product);
+            console.log(temp);
+            cart[temp].amount += amount; 
+        } else {
+            console.log("test");
+            cart[temp].amount += amount; 
         }
-        console.log("ADD TO CART SUCCESS" + amount);
-        callToast("ADD TO CART SUCCESS" + amount);
+        console.log('pre-kaka')
+        // addCartToStorage(cart[temp].id);
+        let temp_cart = JSON.parse(localStorage.getItem("cart") || "[]");
+        localStorage.setItem('cart', JSON.stringify(temp_cart));
+        cartCount += amount;
+        console.log("ADD TO CART SUCCESS " + amount); 
+        callToast("ADD TO CART SUCCESS " + amount);
     updatePage(); 
 }
 
 function removeFromCart(product) {
+        let temp = cart.indexOf(products[product]);
         amount = Number(document.getElementById(`_amount${product}`).value);
-        product = cart.indexOf(products[product]);
-        for (let i = 0; i < amount; i++) {
-            cart.splice(product, 1);
-            cartCount--;
+        if (temp == -1) {
+            console.log("temp -1");
         }
+        if (cart[temp] == undefined) {
+            callToast("There are no items to remove");
+            console.log("There are no items to remove");
+            return;
+        }
+        if (cart[temp].amount <= 1) {
+            cart.splice(temp, 1);
+        } else {
+            cart[temp].amount -= amount;
+        }
+        cartCount -= amount;
         if (cartCount < 0) {
             cartCount = 0;
         }    
@@ -187,29 +211,20 @@ function getProduct() {
 }
 
 
-function addToStorage(product) {                            // פונקציה שתגדיר את המוצר הספציפי
-    for (let i = 0; i < storage.length - 1; i++) {
-        console.log(storage[i]+" test storage value");
-        let tempStorage = localStorage.getItem(storage[i]); // קח את המוצר שיש בלוקאל סטוראג
-        tempStorage = JSON.parse(tempStorage);                      //תמיר את הערך לקוד
-
-
-    if (storage[i] == "favorites")   
-    if (storage[i] == "cart")  
-        if (tempStorage != null) {                                // אם הוא לא כלום - אם הוא כבר משהו בלוקאל סטוראג
-            if (tempStorage[product.number] == undefined) {       // אם המוצר לא קיים בלוקאל סטוראג
-                tempStorage = {                                   // מעדכן את הרשימת עגלה בלוקאל סטוראג ומוסיף את המוצר
-                    ...tempStorage,                               // השלוש נקודות הן כדי לקחת את כל מה שהמוצר מכיל בדיב ולא רק את המספר שלו
-                    [product.number]: product
-                }
-            }
-            tempStorage[product.number].inCart += 1                // תעלה את הכמות שלו בעלה ב1 ואז הכמות שלו תיהיה 1
-        } else {                                                // אחרת - אם המוצר כן קיים בלוקאל סטוראג
-            product.inCart = 1;                                 // תוסיף לכמות שיש לו בעגלה עוד אחד (שיהיה לו עוד מוצר בעלה מבלי להציג את המוצר אלא רק לעלות את הכמות)
-            tempStorage = {
-                [product.number]: product
-            }
+function addCartToStorage(product) {                            // פונקציה שתגדיר את המוצר הספציפי
+        console.log(product+" test storage value");
+        let tempStorage = localStorage.getItem('cart');
+         // קח את המוצר שיש בלוקאל סטוראג
+        tempStorage = JSON.parse(tempStorage);  
+        console.log(tempStorage);                    //תמיר את הערך לקוד
+        if (tempStorage == null) {  
+            console.log('kaka1')                              // אם הוא לא כלום - אם הוא כבר משהו בלוקאל סטוראג
+                console.log('kaka2')       // אם המוצר לא קיים בלוקאל סטוראג
+                tempStorage += JSON.parse(cart[product]);
+            // tempStorage[product.number].inCart += 1                // תעלה את הכמות שלו בעלה ב1 ואז הכמות שלו תיהיה 1
+        } else {    
+            console.log('kaka')                                            // אחרת - אם המוצר כן קיים בלוקאל סטוראג                                                        // תוסיף לכמות שיש לו בעגלה עוד אחד (שיהיה לו עוד מוצר בעלה מבלי להציג את המוצר אלא רק לעלות את הכמות)
+            tempStorage = {};
         }
-        localStorage.setItem(storage[i], JSON.stringify(tempStorage))   // תגדיר את המוצרים בעגלה לשפה מג'ייסון למערך סקריפט כדי שהבראוזר יבין ותגדיר אותו בלוקאל סטוראג
-}
+        localStorage.setItem('cart', JSON.stringify(tempStorage))   // תגדיר את המוצרים בעגלה לשפה מג'ייסון למערך סקריפט כדי שהבראוזר יבין ותגדיר אותו בלוקאל סטוראג
 }
