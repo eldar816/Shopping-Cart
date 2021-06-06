@@ -163,11 +163,14 @@ function checkCookie() {
     }
   }
   
-  function removeCookie(cname) {
-      document.cookie = `${cname}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"`;
+function removeCookie(cname) {
+    document.cookie = `${cname}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"`;
 }
 
 
+function initPage() {
+    updatePage();
+}
 
 function searchProducts() {
 
