@@ -8,21 +8,33 @@ const products = [
     {id : 2, pname : "Product3", price : 150, sizes : "L/XXL", description : "test3", stars : 5, in_cart : false, in_favorites : false, amount : 0}
 ];
 
-const storage = ['cart', 'favorites'];
+// const storage = ['cart', 'favorites'];
 
 const cart = [];
 const favorites = [];
+
+
 
 let cartCount = 0;
 let favoritesCount = 0;
 let temp_flag = false;
 let amount = 0;
 
+var storage = [];
+storage.push(JSON.parse(localStorage.getItem('session')));
+test_storage = JSON.parse(localStorage.getItem('session'));
+console.log(test_storage);
+cart.push(test_storage[0]);
+// localStorage.setItem('session', JSON.stringify(storage));
+
+
 function addToCart(product) {
         let temp = cart.indexOf(products[product]);
         amount = Number(document.getElementById(`_amount${product}`).value);
         console.log(product);
         console.log(temp);
+        console.log(storage[0]);
+        console.log(cart.includes(storage[0]));
         if (temp == -1) {
             cart.push(products[product]);
             temp = cart.indexOf(products[product]);
@@ -35,8 +47,9 @@ function addToCart(product) {
         }
         console.log('pre-kaka')
         // addCartToStorage(cart[temp].id);
-        let temp_cart = JSON.parse(localStorage.getItem("cart") || "[]");
-        localStorage.setItem('cart', JSON.stringify(temp_cart));
+        // let temp_cart = JSON.parse(localStorage.getItem("cart") || "[]");
+        // localStorage.setItem('cart', JSON.stringify(temp_cart));
+        SaveDataToLocalStorage(cart[temp]);
         cartCount += amount;
         console.log("ADD TO CART SUCCESS " + amount); 
         callToast("ADD TO CART SUCCESS " + amount);
@@ -210,6 +223,10 @@ function getProduct() {
 
 }
 
+function updateCart() {
+
+}
+
 
 function addCartToStorage(product) {                            // פונקציה שתגדיר את המוצר הספציפי
         console.log(product+" test storage value");
@@ -227,4 +244,18 @@ function addCartToStorage(product) {                            // פונקצי�
             tempStorage = {};
         }
         localStorage.setItem('cart', JSON.stringify(tempStorage))   // תגדיר את המוצרים בעגלה לשפה מג'ייסון למערך סקריפט כדי שהבראוזר יבין ותגדיר אותו בלוקאל סטוראג
+}
+
+
+
+function SaveDataToLocalStorage(data){
+    storage = [];
+    // Parse the serialized data back into an aray of objects
+    storage = JSON.parse(localStorage.getItem('session')) || [];
+    // Push the new data (whether it be an object or anything else) onto the array
+    storage.push(data);
+    // Alert the array value
+    alert(storage);  // Should be something like [Object array]
+    // Re-serialize the array back into a string and store it in localStorage
+    localStorage.setItem('session', JSON.stringify(storage));
 }
