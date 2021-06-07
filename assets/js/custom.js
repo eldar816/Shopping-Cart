@@ -91,8 +91,6 @@ function removeFromCart(product, flag) {
     } else {
         cart_index = cart.findIndex(index => index.id == products[product].id);
         cart[cart_index].amount -= amount;
-        console.log(cart_index+" cart index");
-        console.log("ssssssssssssssssss");
     }
     cartCount -= amount;
     if (cartCount < 0) {
@@ -263,7 +261,6 @@ function updatePage() {
     }
     updateCart();
     updateFavorites();
-    console.log('ggggg');
     updateCounters();
 }
 
@@ -302,8 +299,6 @@ function updateFavorites() {
 function updateCart() {
     cart = localStorage.getObj('cart');
     for (let i = 0; i < cart.length; i++) {
-        console.log(cart);
-        console.log("amount: "+cart[i].amount);
         cartCheck.innerHTML += `<div class="col-md-4">
         <div class="card mb-4 product-wap rounded-0">
             <div class="card rounded-0">
@@ -328,7 +323,6 @@ function updateCart() {
                 <p class="text-center mb-0">&dollar;${cart[i].price}</p>
             </div>
         </div>`;
-        console.log(cart[i].amount);
     }
 }
 
