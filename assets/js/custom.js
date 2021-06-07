@@ -8,108 +8,123 @@ const products = [
     {id : 2, pname : "Product3", price : 150, sizes : "L/XXL", description : "test3", stars : 5, in_cart : false, in_favorites : false, amount : 0}
 ];
 
-// const storage = ['cart', 'favorites'];
-
-const cart = [];
-const favorites = [];
-
-
-
+var cart = [];
+var favorites = [];
 let cartCount = 0;
 let favoritesCount = 0;
-let temp_flag = false;
 let amount = 0;
 
-var storage = [];
-storage.push(JSON.parse(localStorage.getItem('session')));
-test_storage = JSON.parse(localStorage.getItem('session'));
-console.log(test_storage);
-cart.push(test_storage[0]);
-// localStorage.setItem('session', JSON.stringify(storage));
-
-
 function addToCart(product) {
-        let temp = cart.indexOf(products[product]);
+        let cart_index;
+        cart = localStorage.getObj('cart');
         amount = Number(document.getElementById(`_amount${product}`).value);
-        console.log(product);
-        console.log(temp);
-        console.log(storage[0]);
-        console.log(cart.includes(storage[0]));
-        if (temp == -1) {
+        if (cart == null || cart == undefined) {
+            cart = [];
             cart.push(products[product]);
-            temp = cart.indexOf(products[product]);
-            console.log(product);
-            console.log(temp);
-            cart[temp].amount += amount; 
+            cart_index = cart.findIndex(index => index == products[product]);
+            cart[cart_index].amount += amount; 
         } else {
-            console.log("test");
-            cart[temp].amount += amount; 
+            cart_index = cart.findIndex(index => index.id == products[product].id);
+            if (cart_index == -1) {
+                cart.push(products[product]);
+                cart_index = cart.findIndex(index => index == products[product]);
+            }
+            cart[cart_index].amount += amount;    
         }
-        console.log('pre-kaka')
-        // addCartToStorage(cart[temp].id);
-        // let temp_cart = JSON.parse(localStorage.getItem("cart") || "[]");
-        // localStorage.setItem('cart', JSON.stringify(temp_cart));
-        SaveDataToLocalStorage(cart[temp]);
+        localStorage.setObj('cart', cart);
         cartCount += amount;
         console.log("ADD TO CART SUCCESS " + amount); 
-        callToast("ADD TO CART SUCCESS " + amount);
+        callToast(cart[cart_index].pname + " added to cart " + amount);
     updatePage(); 
 }
 
 function removeFromCart(product) {
-        let temp = cart.indexOf(products[product]);
-        amount = Number(document.getElementById(`_amount${product}`).value);
-        if (temp == -1) {
-            console.log("temp -1");
-        }
-        if (cart[temp] == undefined) {
-            callToast("There are no items to remove");
-            console.log("There are no items to remove");
-            return;
-        }
-        if (cart[temp].amount <= 1) {
-            cart.splice(temp, 1);
-        } else {
-            cart[temp].amount -= amount;
-        }
-        cartCount -= amount;
-        if (cartCount < 0) {
-            cartCount = 0;
-        }    
-            console.log("REMOVE FROM CART SUCCESS" + amount);
-            callToast("REMOVE FROM CART SUCCESS" + amount);
+    cart = localStorage.getObj('cart');
+    let cart_index = cart.findIndex(index => index.id == products[product].id);
+    amount = Number(document.getElementById(`_amount${product}`).value);
+
+    if (cart[cart_index] == undefined || cart[cart_index] == -1) {
+        callToast("There are no items to remove");
+        console.log("There are no items to remove");
+        return;
+    }
+    if (cart[cart_index].amount <= 1) {
+        cart.splice(cart_index, 1);
+    } else {
+        cart[cart_index].amount -= amount;
+    }
+    cartCount -= amount;
+    if (cartCount < 0) {
+        cartCount = 0;
+    }    
+    console.log("REMOVE FROM CART SUCCESS" + amount);
+    callToast("REMOVE FROM CART SUCCESS" + amount);
+    localStorage.setObj('cart', cart);
     updatePage();
 }
 
 function addToFavorites(product) {
-    if (favorites.indexOf(products[product]) == -1) { 
+    favorites = localStorage.getObj('favorites');
+    let favorites_index;
+    if (favorites == null || favorites == undefined) {
+        favorites = [];
         favorites.push(products[product]);
-        favoritesCount++;
-        console.log("ADD TO FAVORITES SUCCESS");
-        callToast("ADD TO FAVORITES SUCCESS");
+        favorites_index = favorites.findIndex(index => index == products[product]);
+        favorites[favorites_index].amount = 1; 
     } else {
-        removeFromFavorites(product);
-        return;
-    }
+        favorites_index = favorites.findIndex(index => index.id == products[product].id);
+        if (favorites_index == -1) { 
+            favorites.push(products[product]);
+            favorites_index = favorites.findIndex(index => index == products[product]);
+            favorites[favorites_index].amount = 1;
+            favoritesCount++;
+            console.log("ADD TO FAVORITES SUCCESS");
+            callToast("ADD TO FAVORITES SUCCESS");
+        } else {
+            removeFromFavorites(favorites_index);
+            return;
+        }
+
+    }       
+   
+    localStorage.setObj('favorites', favorites);
     updatePage(); 
 }
 
 function removeFromFavorites(product) {
-        product = favorites.indexOf(products[product]);
-        console.log(product);
-        favorites.splice(product, 1);
-        console.log("REMOVE FROM FAVORITES SUCCESS");
-        callToast("REMOVE FROM FAVORITES SUCCESS");
-        favoritesCount--;
+    favorites.splice(product, 1);
+    console.log("REMOVE FROM FAVORITES SUCCESS");
+    callToast("REMOVE FROM FAVORITES SUCCESS");
+    favoritesCount--;
+    localStorage.setObj('favorites', favorites);
     updatePage();
 }
 
 function inCart(product) {
-    return (cart.indexOf(products[product]) !== -1);
+    cart = localStorage.getObj('cart');
+    let cart_index;
+    if (cart = null) {
+        return false;
+    } else {
+        cart_index = cart.findIndex(index => index == products[product]);
+        if (cart_index !== -1){
+            return true;
+        }
+    }
+    return false;
 }
 
 function inFavorite(product) {
-    return (favorites.indexOf(products[product]) !== -1);
+    favorites = localStorage.getObj('favorites');
+    if (favorites == null) {
+        return false;
+    } else {
+        let favorites_index = favorites.findIndex(index => index.id == products[product].id);
+        if (favorites_index !== -1){
+            return true;
+        }
+    }
+    return false;
 }
 
 function updatePage() {
@@ -155,6 +170,7 @@ function updatePage() {
             </div>
         </div>`
     }
+    updateCounters();    
 }
 
 
@@ -167,49 +183,43 @@ function callToast(msg) {
     }, 2000);
 }
 
-function setCookie(cname,cvalue,exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = "expires=" + d.toGMTString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i < ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-}
-  
-function checkCookie() {
-    var user=getCookie("username");
-    if (user != "") {
-      alert("Welcome again " + user);
-    } else {
-       user = prompt("Please enter your name:","");
-       if (user != "" && user != null) {
-         setCookie("username", user, 30);
-       }
-    }
-  }
-  
-function removeCookie(cname) {
-    document.cookie = `${cname}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"`;
-}
-
-
 function initPage() {
+    favorites = localStorage.getObj('favorites');
+    cart = localStorage.getObj('cart');
+    updateCounters();
+    callToast("Init-done");
     updatePage();
 }
+
+
+Storage.prototype.setObj = function(key, obj) {
+    return this.setItem(key, JSON.stringify(obj))
+}
+Storage.prototype.getObj = function(key) {
+    return JSON.parse(this.getItem(key))
+}
+
+
+function updateCounters() {
+    cartCount = 0;
+    favoritesCount = 0;
+    let cart_update = localStorage.getObj('cart');
+    let favorites_update = localStorage.getObj('favorites');
+    for (i in cart_update) {
+        cartCount += cart_update[i].amount;
+    }
+    for (i in favorites_update) {
+        favoritesCount += favorites_update[i].amount;
+    }
+    if (favorites_update = null) {   
+        favoritesCount = 0; 
+    }
+    if (cart_update = null) {   
+        cartCount = 0; 
+    }
+}
+
+
 
 function searchProducts() {
 
@@ -221,41 +231,4 @@ function searchResults() {
 
 function getProduct() {
 
-}
-
-function updateCart() {
-
-}
-
-
-function addCartToStorage(product) {                            // פונקציה שתגדיר את המוצר הספציפי
-        console.log(product+" test storage value");
-        let tempStorage = localStorage.getItem('cart');
-         // קח את המוצר שיש בלוקאל סטוראג
-        tempStorage = JSON.parse(tempStorage);  
-        console.log(tempStorage);                    //תמיר את הערך לקוד
-        if (tempStorage == null) {  
-            console.log('kaka1')                              // אם הוא לא כלום - אם הוא כבר משהו בלוקאל סטוראג
-                console.log('kaka2')       // אם המוצר לא קיים בלוקאל סטוראג
-                tempStorage += JSON.parse(cart[product]);
-            // tempStorage[product.number].inCart += 1                // תעלה את הכמות שלו בעלה ב1 ואז הכמות שלו תיהיה 1
-        } else {    
-            console.log('kaka')                                            // אחרת - אם המוצר כן קיים בלוקאל סטוראג                                                        // תוסיף לכמות שיש לו בעגלה עוד אחד (שיהיה לו עוד מוצר בעלה מבלי להציג את המוצר אלא רק לעלות את הכמות)
-            tempStorage = {};
-        }
-        localStorage.setItem('cart', JSON.stringify(tempStorage))   // תגדיר את המוצרים בעגלה לשפה מג'ייסון למערך סקריפט כדי שהבראוזר יבין ותגדיר אותו בלוקאל סטוראג
-}
-
-
-
-function SaveDataToLocalStorage(data){
-    storage = [];
-    // Parse the serialized data back into an aray of objects
-    storage = JSON.parse(localStorage.getItem('session')) || [];
-    // Push the new data (whether it be an object or anything else) onto the array
-    storage.push(data);
-    // Alert the array value
-    alert(storage);  // Should be something like [Object array]
-    // Re-serialize the array back into a string and store it in localStorage
-    localStorage.setItem('session', JSON.stringify(storage));
 }
