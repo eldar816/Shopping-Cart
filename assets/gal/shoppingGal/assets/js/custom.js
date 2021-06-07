@@ -52,7 +52,7 @@ function addToCart(product) {
         cartCount += amount;
         console.log("ADD TO CART SUCCESS " + amount); 
         callToast(`Added ${ amount} Items To Cart`);
-        console.log(`${products[i].id}`);
+        console.log(`${products[product].id}`);
     updatePage(); 
 }
 
@@ -89,6 +89,9 @@ function incrementValue(i)
 {
     var value = parseInt(document.getElementById(`_amount${products[i].id}`).value, 10);
     value = isNaN(value) ? 0 : value;
+    if (value >= 1000){
+        return;
+    }
     value++;
     document.getElementById(`_amount${products[i].id}`).value = value;
 }
