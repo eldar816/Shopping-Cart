@@ -121,8 +121,10 @@
                             <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
                         </a>
                         <ul class="collapse show list-unstyled pl-3">
-                            <li><a class="text-decoration-none" href="#">Men</a></li>
-                            <li><a class="text-decoration-none" href="#">Women</a></li>
+                            <li><a class="text-decoration-none" href="#" onclick="filterByCategory(-1)">All</a></li>
+                            <li><a class="text-decoration-none" href="#" onclick="filterByCategory(0)">Unisex</a></li>
+                            <li><a class="text-decoration-none" href="#" onclick="filterByCategory(1)">Men</a></li>
+                            <li><a class="text-decoration-none" href="#" onclick="filterByCategory(2)">Women</a></li>
                         </ul>
                     </li>
                     <li class="pb-3">
@@ -154,13 +156,13 @@
                     <div class="col-md-6">
                         <ul class="list-inline shop-top-menu pb-3 pt-1">
                             <li class="list-inline-item">
-                                <a class="h3 text-dark text-decoration-none mr-3" href="#">All</a>
+                                <a class="h3 text-dark text-decoration-none mr-3" href="#" onclick="filterByCategory(-1)">All</a>
                             </li>
                             <li class="list-inline-item">
-                                <a class="h3 text-dark text-decoration-none mr-3" href="#">Men's</a>
+                                <a class="h3 text-dark text-decoration-none mr-3" href="#" onclick="filterByCategory(1)">Men's</a>
                             </li>
                             <li class="list-inline-item">
-                                <a class="h3 text-dark text-decoration-none" href="#">Women's</a>
+                                <a class="h3 text-dark text-decoration-none" href="#" onclick="filterByCategory(2)">Women's</a>
                             </li>
                         </ul>
                     </div>
