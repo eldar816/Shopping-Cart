@@ -39,6 +39,9 @@ function addToCart(product) {
         let cart_index;
         cart = localStorage.getObj('cart');
         amount = Number(document.getElementById(`_amount${product}`).value);
+        if (amount < 1 || amount == null) {
+            amount = 1;
+        }
         if (cart == null || cart == undefined) {
             cart = [];
             cart.push(products[product]);
@@ -242,9 +245,9 @@ function updatePage(param) {
             }
         }
         if (inFavorites(i)) {
-            FavoritesCheck = `<li><a class="btn btn-danger text-white"><i onclick="addToFavorites(${products[i].id})" class="fas fa-heart"></i></a></li>`;
+            FavoritesCheck = `<li><a class="btn btn-danger text-white" onclick="addToFavorites(${products[i].id})"><i class="fas fa-heart"></i></a></li>`;
         } else {
-            FavoritesCheck = `<li><a class="btn btn-success text-white"><i onclick="addToFavorites(${products[i].id})" class="far fa-heart"></i></a></li>`;
+            FavoritesCheck = `<li><a class="btn btn-success text-white" onclick="addToFavorites(${products[i].id})"><i class="far fa-heart"></i></a></li>`;
         }
         if (products[i].featured == true) {
             FeaturedCheck =  `<li class="list-inline-item"><i class="fas fa-fire-alt"></i></li>`
@@ -262,7 +265,8 @@ function updatePage(param) {
         </div>
         </div>
         <div class="card-body">
-        <a href="shop-single.html" class="h3 text-decoration-none">${products[i].pname}</a>
+        <div class="h3 text-decoration-none">${products[i].pname}</div>
+        <div class="seeMore" onclick="singlePage(${i})">See More...</div>
         <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
         <ul class="list-inline pb-3">
         <li class="list-inline-item">Size :
@@ -274,7 +278,7 @@ function updatePage(param) {
         <li onclick="decrementValue(${products[i].id})" class="list-inline-item"><span class="btn btn-danger" id="btn-minus">-</span></li>
         <input class="__amount" id="_amount${products[i].id}" type=number min=1 max=999 value=1 placeholder="Amount">
         <li onclick="incrementValue(${products[i].id})" class="list-inline-item"><span class="btn btn-success" id="btn-plus">+</span></li>
-        <li><a class="btn btn-success text-white mt-2"><i style="filter: invert(1);" onclick="addToCart(${products[i].id})" class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i></a></li>
+        <li><a class="btn btn-success text-white mt-2" onclick="addToCart(${products[i].id})"><i style="filter: invert(1);" class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i></a></li>
         </ul>
         </ul>
         <li class="list-inline-item"><i class="text-warning fa fa-star"></i>${products[i].stars}<p class="text-center mb-0">&dollar;${products[i].price}</p></li>
@@ -301,13 +305,14 @@ function updateFavorites() {
                 <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                     <ul class="list-unstyled">
                 
-                        <li><a class="btn btn-success text-white mt-2"><i style="filter: invert(1);" onclick="addToCart(${favorites[i].id})" class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i></a></li>
+                        <li><a class="btn btn-success text-white mt-2" onclick="addToCart(${favorites[i].id})"><i style="filter: invert(1);" class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i></a></li>
                         <li><a class="btn btn-danger text-white mt-2"><i onclick="removeFromFavorites(${favorites[i].id})" class="fas fa-minus-square"></i></a></li>
                     </ul>
                 </div>
             </div>
             <div class="card-body">
-                <a href="shop-single.html" class="h3 text-decoration-none">${favorites[i].pname}</a>
+                <div class="h3 text-decoration-none">${favorites[i].pname}</div>
+                <div class="seeMore" onclick="singlePage(${i})">See More...</div>
                 <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                     <li>${favorites[i].sizes}</li>
                 </ul>
@@ -341,7 +346,8 @@ function updateCart() {
                 </div>
             </div>
             <div class="card-body">
-                <a href="shop-single.html" class="h3 text-decoration-none">${cart[i].pname}</a>
+                <div class="h3 text-decoration-none">${cart[i].pname}</div>
+                <div class="seeMore" onclick="singlePage(${i})">See More...</div>
                 <ul class="list-inline pb-3">
                 <li class="list-inline-item">Size :
                 <li>${cart[i].sizes}</li>
@@ -497,4 +503,71 @@ function sortBy() {
     }
     updatePage();
     console.log(products);
+}
+
+function addToCartSinglePage(product) {
+    let cart_index;
+    cart = localStorage.getObj('cart');
+    let amount = 1;
+    if (cart == null || cart == undefined) {
+        cart = [];
+        cart.push(products[product]);
+        cart_index = cart.findIndex(index => index == products[product]);
+        cart[cart_index].amount += amount;
+    } else {
+        cart_index = cart.findIndex(index => index.id == products[product].id);
+        if (cart_index == -1) {
+            cart.push(products[product]);
+            cart_index = cart.findIndex(index => index == products[product]);
+        }
+        cart[cart_index].amount += amount;
+    }
+    localStorage.setObj('cart', cart);
+    console.log("ADD TO CART SUCCESS ");
+    callToast(cart[cart_index].pname + " added to cart " + amount);    
+    initSinglePage();
+}
+
+function updateCartSinglePage() {
+    cartCheck.innerHTML = "";
+    cart = localStorage.getObj('cart');
+    for (let i = 0; i < cart.length; i++) {
+        cartCheck.innerHTML += `<div class="col-md-4">
+        <div class="card mb-4 product-wap rounded-0">
+            <div class="card rounded-0">
+            <p style="color:white; text-align:center" class="bg-dark">Count:${cart[i].amount}</p>
+                <img class="card-img rounded-0 img-fluid" src="assets/img/shop_${cart[i].id}.jpg">
+                <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                    <ul class="list-unstyled">
+                        <li><a class="btn btn-danger text-white mt-2"><i onclick="removeAllFromCart(${cart[i].id})" class="fas fa-minus-square"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="h3 text-decoration-none">${cart[i].pname}</div>
+                <div class="seeMore" onclick="singlePage(${i})">See More...</div>
+                <ul class="list-inline pb-3">
+                <li class="list-inline-item">Size :
+                <li>${cart[i].sizes}</li>
+            </ul>
+        </div>
+                <ul style="display = inline-block;" class="list-unstyled d-flex justify-content-center mb-1">
+                <li><i class="text-warning fa fa-star"></i></li>${cart[i].stars}
+                </ul>
+                <p class="text-center mb-0">&dollar;${cart[i].price}</p>
+            </div>
+        </div>`;
+    }
+}
+
+function initSinglePage() {
+    updateCartSinglePage();
+    updateFavorites();
+    updateCounters();
+    _carticon.innerHTML = cartCount;
+    _favoritesicon.innerHTML = favoritesCount;
+}
+
+function singlePage(i) {
+    location.href = `shop-single.html?i=${i}`;
 }
