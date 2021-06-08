@@ -31,7 +31,7 @@ let favoritesCount = 0;
 let amount = 0;
 let cartCheck = document.getElementById("cartShow");
 let favCheck = document.getElementById("favsShow");
-
+let totalCost = 0;
 // favorites and cart functionality
 
 function addToCart(product) {
@@ -60,6 +60,9 @@ function addToCart(product) {
         }
         console.log(cart_index);
         console.log(product);
+        TotalCost = localStorage.getObj('total_cost');
+        TotalCost = (cart[cart_index].price * amount) + TotalCost;
+        localStorage.setObj('total_cost', TotalCost);
         localStorage.setObj('cart', cart);
         cartCount += amount;
         console.log("ADD TO CART SUCCESS " + amount); 
@@ -81,9 +84,13 @@ function removeFromCart(product, flag) {
     }
     if (flag = true) {
         cartCount -= cart[cart_index].amount;
+        TotalCost = localStorage.getObj('total_cost');
+        TotalCost = TotalCost - (cart[cart_index].price * cart[cart_index].amount);
         cart.splice(cart_index, 1);
         console.log("REMOVE FROM CART SUCCESS" + amount);
         callToast("REMOVE FROM CART SUCCESS" + amount);
+       
+        localStorage.setObj('total_cost', TotalCost);    
         localStorage.setObj('cart', cart);
         updatePage();
         return;
@@ -97,7 +104,10 @@ function removeFromCart(product, flag) {
     cartCount -= amount;
     if (cartCount < 0) {
         cartCount = 0;
-    }    
+    }
+    TotalCost = localStorage.getObj('total_cost');
+    TotalCost = TotalCost - (cart[cart_index].price * amount);
+    localStorage.setObj('total_cost', TotalCost);    
     console.log("REMOVE FROM CART SUCCESS" + amount);
     callToast("REMOVE FROM CART SUCCESS" + amount);
     localStorage.setObj('cart', cart);
@@ -132,7 +142,8 @@ function addToFavorites(product) {
             return;
         }
 
-    }       
+    }
+    localStorage.setItem('total_cost', totalCost);       
     localStorage.setObj('favorites', favorites);
     updatePage(); 
 }
@@ -309,6 +320,9 @@ function updateFavorites() {
 
 function updateCart() {
     cartCheck.innerHTML = "";
+    TotalCost = localStorage.getObj('total_cost');
+    _totalcost.innerHTML += "&dollar;"+TotalCost;
+    _aftercoupon.innerHTML += "&dollar;"+TotalCost;
     cart = localStorage.getObj('cart');
     for (let i = 0; i < cart.length; i++) {
         cartCheck.innerHTML += `<div class="col-md-4">
@@ -336,6 +350,31 @@ function updateCart() {
             </div>
         </div>`;
     }
+}
+
+function checkOut(){
+    TotalCost = 0;
+    cart = [];
+    localStorage.setObj('total_cost', TotalCost);
+    localStorage.setObj('cart', cart);
+}
+
+const coupon_codes = ['eyal100'];
+function checkCouponCode(code) {
+    console.log(code);
+    let msg;
+    TotalCost = localStorage.getObj('total_cost');
+    coupon_codes.forEach(i => {
+        if (i == code) {
+            msg = "<p style='color:green;'>Coupon applied</p>"
+            if (code = 'eyal100') {
+                TotalCost = TotalCost / 2;
+            }
+        } else {
+            msg = "<p style='color:red;'>Invalid code.</p>"
+        }
+    });
+    _aftercoupon.innerHTML = `&dollar;${TotalCost} <br>${msg}`;
 }
 
 // toast system
@@ -371,10 +410,10 @@ function initPage() {
 
 // localstorage prototypes
 Storage.prototype.setObj = function(key, obj) {
-    return this.setItem(key, JSON.stringify(obj))
+    return this.setItem(key, JSON.stringify(obj));
 }
 Storage.prototype.getObj = function(key) {
-    return JSON.parse(this.getItem(key))
+    return JSON.parse(this.getItem(key));
 }
 
 // count system
