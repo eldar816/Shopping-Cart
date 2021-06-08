@@ -2,33 +2,27 @@
 Author: Eldar
 */
 
-// const products = [
-//     {id : 0, pname : "Product1", price : 50, sizes : "S/M/L/XL/XXL", description : "test1", stars : 4, in_cart : false, in_favorites : false, amount : 0}, 
-//     {id : 1, pname : "Product2", price : 100, sizes : "L/XL/XXL", description : "test2", stars : 3, in_cart : false, in_favorites : false, amount : 0}, 
-//     {id : 2, pname : "Product3", price : 150, sizes : "L/XXL", description : "test3", stars : 5, in_cart : false, in_favorites : false, amount : 0}
-// ];
-
-const products = [{id : 0, pname : "Classic Long Sleeve Shirt", price : 50, sizes : "S/M/L/XL/XXL", description : "test1", stars : 4, in_cart : false, in_favorites : false, amount : 0, featured : 0}, 
-  {id : 1, pname : "Golf Casual Shirt", price : 100, sizes : "S/M/L/XL/XXL", description : "test2", stars : 3, in_cart : false, in_favorites : false, amount : 0, featured : 0}, 
-  {id : 2, pname : "Elegant Daily Dress", price : 150, sizes : "S/M/L/XXL", description : "test3", stars : 5, in_cart : false, in_favorites : false, amount : 0, featured : 0},
-  {id : 3, pname : "Classic Unique Dress", price : 70, sizes : "S/M/L/XL/XXL", description : "test1", stars : 4, in_cart : false, in_favorites : false, amount : 0, featured : 0}, 
-  {id : 4, pname : "Gym One Color Sport Outfit", price : 120, sizes : "S/M/L/XL/XXL", description : "test2", stars : 3, in_cart : false, in_favorites : false, amount : 0, featured : 0}, 
-  {id : 5, pname : "Gym Colored DryFit Sport Outfit", price : 80, sizes : "S/M/L/XL/XXL", description : "test3", stars : 5, in_cart : false, in_favorites : false, amount : 0, featured : 0},
-  {id : 6, pname : "Men's Elegant Blazer", price : 150, sizes : "S/M/L/XL/XXL", description : "test1", stars : 4, in_cart : false, in_favorites : false, amount : 0, featured : 0}, 
-  {id : 7, pname : "Men's Casual Daily Blazer", price : 100, sizes : "L/XL/XXL", description : "test2", stars : 3, in_cart : false, in_favorites : false, amount : 0, featured : 0}, 
-  {id : 8, pname : "Casual Sunglasses", price : 150, sizes : "S/M/L/XXL", description : "test3", stars : 5, in_cart : false, in_favorites : false, amount : 0, featured : 0},
-  {id : 9, pname : "Men's Classic Jeans", price : 70, sizes : "S/M/L/XL/XXL", description : "test1", stars : 4, in_cart : false, in_favorites : false, amount : 0, featured : 0}, 
-  {id : 10, pname : "Classic Tunique Daily Style", price : 140, sizes : "L/XL/XXL", description : "test2", stars : 3, in_cart : false, in_favorites : false, amount : 0, featured : 0}, 
-  {id : 11, pname : "Women's Classic Skinny Jeans", price : 80, sizes : "S/M/L/XL/XXL", description : "test3", stars : 5, in_cart : false, in_favorites : false, amount : 0, featured : 0},
-  {id : 12, pname : "Unisex Snickers Shoes", price : 150, sizes : "Between 36-43", description : "test1", stars : 4, in_cart : false, in_favorites : false, amount : 0, featured : 0}, 
-  {id : 13, pname : "Men's Scribbled Surf Pants Basic ", price : 100, sizes : "L/XL/XXL", description : "test2", stars : 3, in_cart : false, in_favorites : false, amount : 0, featured : 0}, 
-  {id : 14, pname : "Elegant Special Events Moccasin", price : 150, sizes : "Between 35-40", description : "test3", stars : 5, in_cart : false, in_favorites : false, amount : 0, featured : 0},
-  {id : 15, pname : "High Heels Ballet Shoes", price : 80, sizes : "Between 34-38", description : "test1", stars : 4, in_cart : false, in_favorites : false, amount : 0, featured : 0}, 
-  {id : 16, pname : "Casual Designed Leather Bag", price : 160, sizes : "Only One Size", description : "test2", stars : 3, in_cart : false, in_favorites : false, amount : 0, featured : 0}, 
-  {id : 17, pname : "Women's Elegant Bag For Events", price : 110, sizes : "Only One Size", description : "test3", stars : 5, in_cart : false, in_favorites : false, amount : 0, featured : 0},
-  {id : 18, pname : "Women's Unique Suede Casual Bag", price : 70, sizes : "Only One Size", description : "test1", stars : 4, in_cart : false, in_favorites : false, amount : 0, featured : 0}, 
-  {id : 19, pname : "Over-Size Sunglasses Daily Style For Women", price : 120, sizes : "Only One Size", description : "test2", stars : 3, in_cart : false, in_favorites : false, amount : 0, featured : 0}, 
-  {id : 20, pname : "Prestigious Over-Size Sunglasses For Women", price : 80, sizes : "Only One Size", description : "test3", stars : 5, in_cart : false, in_favorites : false, amount : 0, featured : 0}];
+const products = [{id : 0, pname : "Classic Long Sleeve Shirt", price : 50, sizes : "S/M/L/XL/XXL", description : "test1", stars : 4, in_cart : false, in_favorites : false, amount : 0, featured : true}, 
+  {id : 1, pname : "Golf Casual Shirt", price : 100, sizes : "S/M/L/XL/XXL", description : "test2", stars : 3, in_cart : false, in_favorites : false, amount : 0, featured : false}, 
+  {id : 2, pname : "Elegant Daily Dress", price : 150, sizes : "S/M/L/XXL", description : "test3", stars : 5, in_cart : false, in_favorites : false, amount : 0, featured : true},
+  {id : 3, pname : "Classic Unique Dress", price : 70, sizes : "S/M/L/XL/XXL", description : "test1", stars : 4, in_cart : false, in_favorites : false, amount : 0, featured : false}, 
+  {id : 4, pname : "Gym One Color Sport Outfit", price : 120, sizes : "S/M/L/XL/XXL", description : "test2", stars : 3, in_cart : false, in_favorites : false, amount : 0, featured : false}, 
+  {id : 5, pname : "Gym Colored DryFit Sport Outfit", price : 80, sizes : "S/M/L/XL/XXL", description : "test3", stars : 5, in_cart : false, in_favorites : false, amount : 0, featured : false},
+  {id : 6, pname : "Men's Elegant Blazer", price : 150, sizes : "S/M/L/XL/XXL", description : "test1", stars : 4, in_cart : false, in_favorites : false, amount : 0, featured : true}, 
+  {id : 7, pname : "Men's Casual Daily Blazer", price : 100, sizes : "L/XL/XXL", description : "test2", stars : 3, in_cart : false, in_favorites : false, amount : 0, featured : false}, 
+  {id : 8, pname : "Casual Sunglasses", price : 150, sizes : "S/M/L/XXL", description : "test3", stars : 5, in_cart : false, in_favorites : false, amount : 0, featured : true},
+  {id : 9, pname : "Men's Classic Jeans", price : 70, sizes : "S/M/L/XL/XXL", description : "test1", stars : 4, in_cart : false, in_favorites : false, amount : 0, featured : false}, 
+  {id : 10, pname : "Classic Tunique Daily Style", price : 140, sizes : "L/XL/XXL", description : "test2", stars : 3, in_cart : false, in_favorites : false, amount : 0, featured : false}, 
+  {id : 11, pname : "Women's Classic Skinny Jeans", price : 80, sizes : "S/M/L/XL/XXL", description : "test3", stars : 5, in_cart : false, in_favorites : false, amount : 0, featured : false},
+  {id : 12, pname : "Unisex Snickers Shoes", price : 150, sizes : "Between 36-43", description : "test1", stars : 4, in_cart : false, in_favorites : false, amount : 0, featured : false}, 
+  {id : 13, pname : "Men's Scribbled Surf Pants Basic ", price : 100, sizes : "L/XL/XXL", description : "test2", stars : 3, in_cart : false, in_favorites : false, amount : 0, featured : false}, 
+  {id : 14, pname : "Elegant Special Events Moccasin", price : 150, sizes : "Between 35-40", description : "test3", stars : 5, in_cart : false, in_favorites : false, amount : 0, featured : false},
+  {id : 15, pname : "High Heels Ballet Shoes", price : 80, sizes : "Between 34-38", description : "test1", stars : 4, in_cart : false, in_favorites : false, amount : 0, featured : false}, 
+  {id : 16, pname : "Casual Designed Leather Bag", price : 160, sizes : "Only One Size", description : "test2", stars : 3, in_cart : false, in_favorites : false, amount : 0, featured : false}, 
+  {id : 17, pname : "Women's Elegant Bag For Events", price : 110, sizes : "Only One Size", description : "test3", stars : 5, in_cart : false, in_favorites : false, amount : 0, featured : false},
+  {id : 18, pname : "Women's Unique Suede Casual Bag", price : 70, sizes : "Only One Size", description : "test1", stars : 4, in_cart : false, in_favorites : false, amount : 0, featured : false}, 
+  {id : 19, pname : "Over-Size Sunglasses Daily Style For Women", price : 120, sizes : "Only One Size", description : "test2", stars : 3, in_cart : false, in_favorites : false, amount : 0, featured : false}, 
+  {id : 20, pname : "Prestigious Over-Size Sunglasses For Women", price : 80, sizes : "Only One Size", description : "test3", stars : 5, in_cart : false, in_favorites : false, amount : 0, featured : false}];
 
 var cart = [];
 var favorites = [];
@@ -37,6 +31,8 @@ let favoritesCount = 0;
 let amount = 0;
 let cartCheck = document.getElementById("cartShow");
 let favCheck = document.getElementById("favsShow");
+
+// favorites and cart functionality
 
 function addToCart(product) {
         console.log(product);
@@ -78,9 +74,6 @@ function removeFromCart(product, flag) {
     if (amount < 1) {
         amount = 1;
     }
-    // if ((amount - cart[cart_index].amount) <= 0) {
-    //     flag = true;
-    // }
     if (cart[cart_index] == undefined || cart[cart_index] == -1) {
         callToast("There are no items to remove");
         console.log("There are no items to remove");
@@ -161,6 +154,14 @@ function removeFromFavorites(product) {
     updatePage();
 }
 
+function incrementValue(i) {
+    document.getElementById(`_amount${i}`).stepUp();
+ }
+ function decrementValue(i) {
+    document.getElementById(`_amount${i}`).stepDown();
+ }
+
+// checks and info gathering
 function inCart(product) {
     cart = localStorage.getObj('cart');
     let cart_index;
@@ -175,7 +176,7 @@ function inCart(product) {
     return false;
 }
 
-function inFavorite(product) {
+function inFavorites(product) {
     favorites = localStorage.getObj('favorites');
     if (favorites == null) {
         return false;
@@ -188,64 +189,51 @@ function inFavorite(product) {
     return false;
 }
 
-// function updatePage() {
-//     let FavoritesCheck;
-//     _res.innerHTML = "";
-//     _carticon.innerHTML = cartCount;
-//     _favoritesicon.innerHTML = favoritesCount;
-//     for (let i = 0; i < products.length; i++) {
-//         if (inFavorite(i)) {
-//             FavoritesCheck = `<li><a class="btn btn-danger text-white"><i onclick="addToFavorites(${products[i].id})" class="fas fa-heart"></i></a></li>`;
-//         } else {
-//             FavoritesCheck = `<li><a class="btn btn-success text-white"><i onclick="addToFavorites(${products[i].id})" class="far fa-heart"></i></a></li>`;
-//         }
-//         _res.innerHTML += `<div class="col-md-4">
-//         <div class="card mb-4 product-wap rounded-0">
-//             <div class="card rounded-0">
-//                 <img class="card-img rounded-0 img-fluid" src="assets/img/shop_${products[i].id}.jpg">
-//                 <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
-//                     <ul class="list-unstyled">
-//                         ${FavoritesCheck}
-//                         <li><input class="__amount" id="_amount${products[i].id}" type="number" value="1" placeholder="Amount"></li>
-//                         <li><a class="btn btn-success text-white mt-2"><i onclick="addToCart(${products[i].id})" class="fas fa-plus-square"></i></a></li>
-//                         <li><a class="btn btn-danger text-white mt-2"><i onclick="removeFromCart(${products[i].id})" class="fas fa-minus-square"></i></a></li>
-//                     </ul>
-//                 </div>
-//             </div>
-//             <div class="card-body">
-//                 <a href="shop-single.html" class="h3 text-decoration-none">${products[i].pname}</a>
-//                 <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-//                     <li>${products[i].sizes}</li>
-//                     <li class="pt-2">
-//                         <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
-//                         <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
-//                         <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
-//                         <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
-//                         <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
-//                     </li>
-//                 </ul>
-//                 <ul style="display = inline-block;" class="list-unstyled d-flex justify-content-center mb-1">
-//                 <li><i class="text-warning fa fa-star"></i></li>${products[i].stars}
-//                 </ul>
-//                 <p class="text-center mb-0">&dollar;${products[i].price}</p>
-//             </div>
-//         </div>`
-//     }
-//     updateCounters();    
-// }
+function isFeatured(product){
+    let index = getProductIndexById(product);
+    return products[index].featured;    
+}
 
+function getProductIndexById(product) {
+    return products.findIndex(index => index.id == product);
+}
 
-function updatePage() {
+function getGender(product) {
+    let index = getProductIndexById(product);
+    return products[index].gender;
+}
+var category_flag = false;
+
+function filterByCategory(param) {
+    category_flag = true;
+    updatePage(param);
+}
+
+// update systems 
+function updatePage(param) {
     let FavoritesCheck;
+    let FeaturedCheck;
     _res.innerHTML = "";
     _carticon.innerHTML = cartCount;
     _favoritesicon.innerHTML = favoritesCount;
     console.log(products);
     for (let i = 0; i < products.length; i++) {
-        if (inFavorite(i)) {
+        if (category_flag) {
+            if (products[i].gender == param) {
+                break;
+            } else {
+                
+            }
+        }
+        if (inFavorites(i)) {
             FavoritesCheck = `<li><a class="btn btn-danger text-white"><i onclick="addToFavorites(${products[i].id})" class="fas fa-heart"></i></a></li>`;
         } else {
             FavoritesCheck = `<li><a class="btn btn-success text-white"><i onclick="addToFavorites(${products[i].id})" class="far fa-heart"></i></a></li>`;
+        }
+        if (products[i].featured == true) {
+            FeaturedCheck =  `<li class="list-inline-item"><i class="fas fa-fire-alt"></i></li>`
+        } else {
+            FeaturedCheck = "";
         }
         _res.innerHTML += `<div class="col-md-4">
         <div class="card mb-4 product-wap rounded-0">
@@ -274,6 +262,7 @@ function updatePage() {
         </ul>
         </ul>
         <li class="list-inline-item"><i class="text-warning fa fa-star"></i>${products[i].stars}<p class="text-center mb-0">&dollar;${products[i].price}</p></li>
+        ${FeaturedCheck}
         </div>
         </div>`;
     }
@@ -347,6 +336,7 @@ function updateCart() {
     }
 }
 
+// toast system
 
 function callToast(msg) {
     let _toast = document.getElementById("_toast");
@@ -356,6 +346,8 @@ function callToast(msg) {
         _toast.className = _toast.className.replace("show", "");
     }, 2000);
 }
+
+// page init
 
 function initPage() {
     favorites = localStorage.getObj('favorites');
@@ -375,7 +367,7 @@ function initPage() {
     updatePage();
 }
 
-
+// localstorage prototypes
 Storage.prototype.setObj = function(key, obj) {
     return this.setItem(key, JSON.stringify(obj))
 }
@@ -383,7 +375,7 @@ Storage.prototype.getObj = function(key) {
     return JSON.parse(this.getItem(key))
 }
 
-
+// count system
 function updateCounters() {
     cartCount = 0;
     favoritesCount = 0;
@@ -403,50 +395,10 @@ function updateCounters() {
     }
 }
 
-// function incrementValue(i) {
-//     var value = parseInt(document.getElementById(`_amount${products[i].id}`).value, 10);
-//     value = isNaN(value) ? 0 : value;
-//     if (value >= 1000) {
-//         return;
-//     }
-//     value++;
-//     document.getElementById(`_amount${products[i].id}`).value = value;
-// }
-
-// function decrementValue(i) {
-//     var value = parseInt(document.getElementById(`_amount${products[i].id}`).value, 10);
-//     value = isNaN(value) ? 0 : value;
-//     if(value <= 0){
-//         return;
-//     } else {
-//         value--;
-//         document.getElementById(`_amount${products[i].id}`).value = value;
-//     }
-// }
-
-
-function incrementValue(i) {
-    document.getElementById(`_amount${i}`).stepUp();
- }
- function decrementValue(i) {
-    document.getElementById(`_amount${i}`).stepDown();
- }
-
-
-
-function searchResults() {
-
-}
-
-function getProduct() {
-
-}
-
-
+// search system
 const search = document.getElementById("inputModalSearch");
 const search_results = document.getElementById("_results");
 let search_term = "";
-
 const searchProducts = () => {
 search_results.innerHTML = "";
   products.filter((item) => {
@@ -467,7 +419,7 @@ search.addEventListener("input", (event) => {
   searchProducts();
 });
 
-
+// sort system
 
 function sortBy() {
     let param;
@@ -484,7 +436,9 @@ function sortBy() {
             return b.price - a.price;
         });              
     } else if (param == 4) {
-      products.sort((a, b) => a.pname.localeCompare(b.pname) || a.featured - b.featured);
+        products.sort(function(a, b) {
+            return b.featured - a.featured;
+        });
     } else if (param == 0) {
         products.sort(function(a, b) {
             return a.id - b.id;
