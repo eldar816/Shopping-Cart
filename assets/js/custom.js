@@ -353,6 +353,12 @@ function updateCart() {
 }
 
 function checkOut(){
+    TotalCost = localStorage.getObj('total_cost');
+    if (TotalCost <= 0) {
+        msg = 'You have no items to pay for.'
+        _aftercoupon.innerHTML = `&dollar;${TotalCost} <br>${msg}`;
+        return;
+    }
     TotalCost = 0;
     cart = [];
     localStorage.setObj('total_cost', TotalCost);
