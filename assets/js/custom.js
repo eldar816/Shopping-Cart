@@ -83,9 +83,14 @@ function removeFromCart(product, flag) {
         return;
     }
     if (flag = true) {
+        console.log('flag');
         cartCount -= cart[cart_index].amount;
         TotalCost = localStorage.getObj('total_cost');
+        console.log(`${cart[cart_index].price}+" "+ " " + ${cart[cart_index].amount} + " " + ${(TotalCost - (cart[cart_index].price * cart[cart_index].amount))}`);
         TotalCost = TotalCost - (cart[cart_index].price * cart[cart_index].amount);
+        if (TotalCost < 0) {
+            TotalCost = 0;
+        }
         cart.splice(cart_index, 1);
         console.log("REMOVE FROM CART SUCCESS" + amount);
         callToast("REMOVE FROM CART SUCCESS" + amount);
@@ -142,8 +147,7 @@ function addToFavorites(product) {
             return;
         }
 
-    }
-    localStorage.setItem('total_cost', totalCost);       
+    }    
     localStorage.setObj('favorites', favorites);
     updatePage(); 
 }
@@ -321,8 +325,8 @@ function updateFavorites() {
 function updateCart() {
     cartCheck.innerHTML = "";
     TotalCost = localStorage.getObj('total_cost');
-    _totalcost.innerHTML += "&dollar;"+TotalCost;
-    _aftercoupon.innerHTML += "&dollar;"+TotalCost;
+    _totalcost.innerHTML = "&dollar;"+TotalCost;
+    _aftercoupon.innerHTML = "&dollar;"+TotalCost;
     cart = localStorage.getObj('cart');
     for (let i = 0; i < cart.length; i++) {
         cartCheck.innerHTML += `<div class="col-md-4">
