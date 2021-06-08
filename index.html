@@ -73,13 +73,16 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="" method="get" class="modal-content modal-body border-0 p-0">
+                <h1>Search</h1><br>  
+                <input type="search" class="form-control" id="inputModalSearch" name="q" placeholder="Search product..."></br>
                 <div class="input-group mb-2">
-                    <input type="text" class="form-control" id="inputModalSearch" name="q" placeholder="Search ...">
-                    <button type="submit" class="input-group-text bg-success text-light">
-                        <i class="fa fa-fw fa-search text-white"></i>
-                    </button>
+                    <ul id="_results"></ul>              
                 </div>
+                <!-- <button type="submit" class="input-group-text bg-success text-light">
+                    <i class="fa fa-fw fa-search text-white"></i>
+                </button> -->
             </form>
+   
         </div>
     </div>
     <div class="modal fade bg-white" id="templatemo_cart" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -165,9 +168,11 @@
                         <div class="d-flex">
                             <select id="sortSelect" class="form-control">
                                 <option value="" disabled selected>Sort By</option>
-                                <option>A to Z</option>
-                                <option>Featured</option>
-                                <option>Item</option>
+                                <option value=1>A to Z</option>
+                                <option value=2>Price (Low to High)</option>
+                                <option value=3>Price (High to Low)</option>
+                                <option value=4>Featured</option>
+                                <option value=0>Default</option>
                             </select>
                             <button onclick="sortBy()" class="input-group-text bg-dark text-light">Go</button>
                         </div>

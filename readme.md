@@ -3,7 +3,7 @@
 
 
 # to do for tuesday
-    fix removefromfavorites
+    fix removefromfavorites - DONE
     add dynamic stars presentation 
     add checkout cart
     connect singlepage to mainpage
