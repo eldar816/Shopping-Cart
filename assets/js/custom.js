@@ -274,7 +274,7 @@ function updatePage(param) {
         </li>
         <li>${products[i].sizes}</li>
         </ul>
-        <ul class="list-inline pb-3">
+        <ul class="list-inline pb-3 pointer-event">
         <li onclick="decrementValue(${products[i].id})" class="list-inline-item"><span class="btn btn-danger" id="btn-minus">-</span></li>
         <input class="__amount" id="_amount${products[i].id}" type=number min=1 max=999 value=1 placeholder="Amount">
         <li onclick="incrementValue(${products[i].id})" class="list-inline-item"><span class="btn btn-success" id="btn-plus">+</span></li>
@@ -535,11 +535,11 @@ function updateCartSinglePage() {
         cartCheck.innerHTML += `<div class="col-md-4">
         <div class="card mb-4 product-wap rounded-0">
             <div class="card rounded-0">
-            <p style="color:white; text-align:center" class="bg-dark">Count:${cart[i].amount}</p>
+            <p style="color:white; text-align:center" class="bg-dark">Count:<span id="_amount${cart[i].id}">${cart[i].amount}</span></p>
                 <img class="card-img rounded-0 img-fluid" src="assets/img/shop_${cart[i].id}.jpg">
                 <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                     <ul class="list-unstyled">
-                        <li><a class="btn btn-danger text-white mt-2"><i onclick="removeAllFromCart(${cart[i].id})" class="fas fa-minus-square"></i></a></li>
+                        <li><a class="btn btn-danger text-white mt-2"><i onclick="removeAllFromCartSinglePage(${cart[i].id})" class="fas fa-minus-square"></i></a></li>
                     </ul>
                 </div>
             </div>
@@ -557,6 +557,7 @@ function updateCartSinglePage() {
                 <p class="text-center mb-0">&dollar;${cart[i].price}</p>
             </div>
         </div>`;
+
     }
 }
 
@@ -570,4 +571,57 @@ function initSinglePage() {
 
 function singlePage(i) {
     location.href = `shop-single.html?i=${i}`;
+}
+
+function removeFromCartSinglePage(product, flag) {
+    cart = localStorage.getObj('cart');
+    let cart_index = cart.findIndex(index => index.id == product);
+    amount = Number(document.getElementById(`_amount${product}`).value);
+    if (amount < 1) {
+        amount = 1;
+    }
+    if (cart[cart_index] == undefined || cart[cart_index] == -1) {
+        callToast("There are no items to remove");
+        console.log("There are no items to remove");
+        return;
+    }
+    if (flag = true) {
+        console.log('flag');
+        cartCount -= cart[cart_index].amount;
+        TotalCost = localStorage.getObj('total_cost');
+        console.log(`${cart[cart_index].price}+" "+ " " + ${cart[cart_index].amount} + " " + ${(TotalCost - (cart[cart_index].price * cart[cart_index].amount))}`);
+        TotalCost = TotalCost - (cart[cart_index].price * cart[cart_index].amount);
+        if (TotalCost < 0) {
+            TotalCost = 0;
+        }
+        cart.splice(cart_index, 1);
+        console.log("REMOVE FROM CART SUCCESS" + amount);
+        callToast("REMOVE FROM CART SUCCESS" + amount);
+
+        localStorage.setObj('total_cost', TotalCost);
+        localStorage.setObj('cart', cart);
+        initSinglePage();
+        return;
+    }
+    if (cart[cart_index].amount <= 1) {
+        cart.splice(cart_index, 1);
+    } else {
+        cart_index = cart.findIndex(index => index.id == products[product].id);
+        cart[cart_index].amount -= amount;
+    }
+    cartCount -= amount;
+    if (cartCount < 0) {
+        cartCount = 0;
+    }
+    TotalCost = localStorage.getObj('total_cost');
+    TotalCost = TotalCost - (cart[cart_index].price * amount);
+    localStorage.setObj('total_cost', TotalCost);
+    console.log("REMOVE FROM CART SUCCESS" + amount);
+    callToast("REMOVE FROM CART SUCCESS" + amount);
+    localStorage.setObj('cart', cart);
+    initSinglePage();
+}
+
+function removeAllFromCartSinglePage(product, flag) {
+    removeFromCartSinglePage(product, flag);
 }

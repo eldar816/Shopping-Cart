@@ -92,3 +92,7 @@ input::-webkit-inner-spin-button {
 #home{
   margin-left: 50%;
 }
+
+#_carticon, #_favoritesicon{
+  cursor: pointer;
+}
