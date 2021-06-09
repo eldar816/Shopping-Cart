@@ -518,6 +518,9 @@ function addToCartSinglePage(product) {
 
 function updateCartSinglePage() {
     updateCounters();
+    TotalCost = localStorage.getObj('total_cost');
+    _totalcost.innerHTML = "&dollar;"+TotalCost;
+    _aftercoupon.innerHTML = "&dollar;"+TotalCost;
     _carticon.innerHTML = cartCount;
     _favoritesicon.innerHTML = favoritesCount;
     cartCheck.innerHTML = "";

@@ -78,37 +78,59 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="" method="get" class="modal-content modal-body border-0 p-0">
+                <h1>Search</h1><br>  
+                <input type="search" class="form-control" id="inputModalSearch" name="q" placeholder="Search product..."></br>
                 <div class="input-group mb-2">
-                    <input type="text" class="form-control" id="inputModalSearch" name="q" placeholder="Search ...">
-                    <button type="submit" class="input-group-text bg-success text-light">
-                        <i class="fa fa-fw fa-search text-white"></i>
-                    </button>
+                    <ul id="_results"></ul>              
                 </div>
+                <!-- <button type="submit" class="input-group-text bg-success text-light">
+                    <i class="fa fa-fw fa-search text-white"></i>
+                </button> -->
             </form>
+   
         </div>
     </div>
     <div class="modal fade bg-white" id="templatemo_cart" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="w-100 pt-1 mb-5 text-right">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h2>Shopping Cart</h2>
+                <h4>Order Summary</h4>
             </div>
             <div class="modal-content modal-body border-0 p-0">
-                    <div id="cartShow" class="input-group mb-2"></div>
+                <div id="cartShow" class="input-group mb-2"></div>
+                <br>
+                <div class="modal-content">
+                        <div id="couponArea" class="d-flex">
+                            <label for="couponCode"><strong>Coupon Code: </strong></label>
+                            <input style="width: 300px;" type="text" name="" id="couponCode" placeholder="Enter Your Code Here" class="form-control bg-light border-dark">
+                            <button onclick="checkCouponCode(couponCode.value)" class="input-group-text bg-dark text-light">Submit</button>
+                            <br>
+                        </div>
+                    <table>
+                        <tr>
+                            <td>
+                                <label for="_totalcost"><strong>Total Cost:&nbsp;</strong></label><strong id="_totalcost"></strong>
+                            </td>
+                            <td>
+                                <span id="tempSum"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="_aftercoupon"><strong>Your Price:&nbsp;</strong></label><strong id="_aftercoupon"></strong></td>
+                            <td>
+                                <span id="totalSum"></span>
+                            </td>
+                        </tr>
+                    </table>
+                    <a href="./order-summary.html">
+                   <button style="text-align: center; width: 100px;" onclick="checkOut(couponCode.value)" class="input-group-text bg-dark text-light">Checkout</button>
+                </a>
+                </div>
             </div>
         </div>
     </div>
-    <div class="modal fade bg-white" id="templatemo_favs" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="w-100 pt-1 mb-5 text-right">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-content modal-body border-0 p-0">
-                    <div id="favsShow" class="input-group mb-2"></div>
-            </div>
-        </div>
-    </div>
-
-
 
     <!-- Open Content -->
     <section class="bg-light">
