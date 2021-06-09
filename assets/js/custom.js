@@ -453,7 +453,7 @@ search_results.innerHTML = "";
     })
     .forEach((index) => {
       const li = document.createElement("li");
-      li.innerHTML = `<a href="./shop-single.html">${index.pname}`;
+        li.innerHTML = `<a class="text-decoration-none">${index.pname}</a><img class="card-img rounded-0 img-fluid" style="height:200px; width:150px;" src="assets/img/shop_${index.id}.jpg">`;
       search_results.appendChild(li);
     });
 };
