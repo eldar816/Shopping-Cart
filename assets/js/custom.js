@@ -510,6 +510,9 @@ function addToCartSinglePage(product) {
         cart[cart_index].amount += 1;
     }
     cartCount++;
+    TotalCost = localStorage.getObj('total_cost');
+    TotalCost = cart[cart_index].price + TotalCost;
+    localStorage.setObj('total_cost', TotalCost);
     localStorage.setObj('cart', cart);
     console.log("ADD TO CART SUCCESS ");
     callToast(cart[cart_index].pname + " added to cart " + 1);    
