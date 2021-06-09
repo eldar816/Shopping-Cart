@@ -7,10 +7,41 @@
     <title>Order Summary</title>
 </head>
 <body>
-    <h1>Order Number: #123</h1>
-    <p>Total Items and Summary of item list</p>
-    <p>Total Cost and Cost after coupon code</p>
-    <p>Enjoy!</p><br><br>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const myParam = urlParams.get('order');
+    </script>
+    <h1 id="_order_number">Order Number: #123</h1>
+    <p id="_totalitems">Total Items and Summary of item list</p>
+    <p id="_totalcost">Total Cost and Cost after coupon code</p>
+    <h1>Enjoy!</h1><br><br>
+
     <a href="./index.html">Home</a>
+    <script>
+        let YourPrice = JSON.parse(localStorage.getItem('your_price'));
+        let TotalCost = JSON.parse(localStorage.getItem('total_cost'));
+        let Items = JSON.parse(localStorage.getItem('cart'));
+        console.log(Items);
+        let TotalItems = 0;
+        for (i in Items) {
+            TotalItems += Items[i].amount;
+        }
+        _order_number.innerHTML = `Order Number: #`+Math.floor(Math.random()) * 999999;
+        _totalitems.innerHTML = `Total Items: <strong>${TotalItems}</strong>.`;
+        _totalcost.innerHTML = `Total Cost: <strong>&dollar;${YourPrice}</strong>.`;
+
+        Storage.prototype.setObj = function(key, obj) {
+            return this.setItem(key, JSON.stringify(obj));
+        }
+        Storage.prototype.getObj = function(key) {
+            return JSON.parse(this.getItem(key));
+        }
+        TotalCost = 0;
+        cart = [];
+        YourPrice = 0;
+        localStorage.setObj('your_price', YourPrice)
+        localStorage.setObj('total_cost', TotalCost);
+        localStorage.setObj('cart', cart);
+    </script>
 </body>
 </html>

@@ -32,18 +32,15 @@ let amount = 0;
 let cartCheck = document.getElementById("cartShow");
 let favCheck = document.getElementById("favsShow");
 let totalCost = 0;
+let YourPrice;
 // favorites and cart functionality
 
-<<<<<<< Updated upstream
-function addToCart(product) {
-=======
 function addToCart(product, amount) {
-        amount = Number(document.getElementById(`_amount${product}`).value);
->>>>>>> Stashed changes
-        console.log(product);
         let cart_index;
         cart = localStorage.getObj('cart');
-        amount = Number(document.getElementById(`_amount${product}`).value);
+        if (amount < 1 || amount == null) {
+            amount = 1;
+        }
         if (cart == null || cart == undefined) {
             cart = [];
             cart.push(products[product]);
@@ -51,20 +48,15 @@ function addToCart(product, amount) {
             cart[cart_index].amount += amount; 
         } else {
             cart_index = cart.findIndex(index => index.id == product);
-            console.log(cart_index);
             if (cart_index == -1) {
                 cart_index = products.findIndex(index => index.id == product)
                 cart.push(products[cart_index]);
                 cart_index = cart.findIndex(index => index.id == product);
                 cart[cart_index].amount += amount; 
-                console.log(cart_index);
             } else {
-                console.log(cart[cart_index].id);
                 cart[cart_index].amount += amount; 
             }
         }
-        console.log(cart_index);
-        console.log(product);
         TotalCost = localStorage.getObj('total_cost');
         TotalCost = (cart[cart_index].price * amount) + TotalCost;
         localStorage.setObj('total_cost', TotalCost);
@@ -75,11 +67,10 @@ function addToCart(product, amount) {
     updatePage(); 
 }
 
-function removeFromCart(product, flag) {
+function removeFromCart(product, amount, flag) {
     cart = localStorage.getObj('cart');
     let cart_index = cart.findIndex(index => index.id == product);
-    amount = Number(document.getElementById(`_amount${product}`).value);
-    if (amount < 1) {
+    if (amount < 1 || amount == null) {
         amount = 1;
     }
     if (cart[cart_index] == undefined || cart[cart_index] == -1) {
@@ -88,10 +79,8 @@ function removeFromCart(product, flag) {
         return;
     }
     if (flag = true) {
-        console.log('flag');
         cartCount -= cart[cart_index].amount;
         TotalCost = localStorage.getObj('total_cost');
-        console.log(`${cart[cart_index].price}+" "+ " " + ${cart[cart_index].amount} + " " + ${(TotalCost - (cart[cart_index].price * cart[cart_index].amount))}`);
         TotalCost = TotalCost - (cart[cart_index].price * cart[cart_index].amount);
         if (TotalCost < 0) {
             TotalCost = 0;
@@ -125,11 +114,10 @@ function removeFromCart(product, flag) {
 }
 
 function removeAllFromCart(product, flag) {
-    removeFromCart(product, flag); 
+    removeFromCart(product, 1, flag); 
 }
 
 function addToFavorites(product) {
-    console.log(product);
     favorites = localStorage.getObj('favorites');
     let favorites_index;
     if (favorites == null || favorites == undefined) {
@@ -160,8 +148,6 @@ function addToFavorites(product) {
 function removeFromFavorites(product) {
     favorites = localStorage.getObj('favorites');
     let favorites_index = favorites.findIndex(index => index.id == product);
-    console.log(product);
-    console.log(favorites_index);
     if (favorites_index == -1) {
         console.log("Favorites does not exists " +favorites_index);
         return;
@@ -236,7 +222,6 @@ function updatePage(param) {
     _res.innerHTML = "";
     _carticon.innerHTML = cartCount;
     _favoritesicon.innerHTML = favoritesCount;
-    console.log(products);
     if (param == -1) {
         category_flag = false;
     }
@@ -247,9 +232,9 @@ function updatePage(param) {
             }
         }
         if (inFavorites(i)) {
-            FavoritesCheck = `<li><a class="btn btn-danger text-white"><i onclick="addToFavorites(${products[i].id})" class="fas fa-heart"></i></a></li>`;
+            FavoritesCheck = `<li><a class="btn btn-danger text-white" onclick="addToFavorites(${products[i].id})"><i class="fas fa-heart"></i></a></li>`;
         } else {
-            FavoritesCheck = `<li><a class="btn btn-success text-white"><i onclick="addToFavorites(${products[i].id})" class="far fa-heart"></i></a></li>`;
+            FavoritesCheck = `<li><a class="btn btn-success text-white" onclick="addToFavorites(${products[i].id})"><i class="far fa-heart"></i></a></li>`;
         }
         if (products[i].featured == true) {
             FeaturedCheck =  `<li class="list-inline-item"><i class="fas fa-fire-alt"></i></li>`
@@ -267,7 +252,8 @@ function updatePage(param) {
         </div>
         </div>
         <div class="card-body">
-        <a href="shop-single.html" class="h3 text-decoration-none">${products[i].pname}</a>
+        <div class="h3 text-decoration-none">${products[i].pname}</div>
+        <div class="seeMore" onclick="singlePage(${i})">See More...</div>
         <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
         <ul class="list-inline pb-3">
         <li class="list-inline-item">Size :
@@ -279,7 +265,7 @@ function updatePage(param) {
         <li onclick="decrementValue(${products[i].id})" class="list-inline-item"><span class="btn btn-danger" id="btn-minus">-</span></li>
         <input class="__amount" id="_amount${products[i].id}" type=number min=1 max=999 value=1 placeholder="Amount">
         <li onclick="incrementValue(${products[i].id})" class="list-inline-item"><span class="btn btn-success" id="btn-plus">+</span></li>
-        <li><a class="btn btn-success text-white mt-2"><i style="filter: invert(1);" onclick="addToCart(${products[i].id})" class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i></a></li>
+        <li><a class="btn btn-success text-white mt-2" onclick="addToCart(${products[i].id}, Number(_amount${products[i].id}.value))"><i style="filter: invert(1);" class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i></a></li>
         </ul>
         </ul>
         <li class="list-inline-item"><i class="text-warning fa fa-star"></i>${products[i].stars}<p class="text-center mb-0">&dollar;${products[i].price}</p></li>
@@ -306,13 +292,14 @@ function updateFavorites() {
                 <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                     <ul class="list-unstyled">
                 
-                        <li><a class="btn btn-success text-white mt-2"><i style="filter: invert(1);" onclick="addToCart(${favorites[i].id})" class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i></a></li>
+                        <li><a class="btn btn-success text-white mt-2" onclick="addToCart(${favorites[i].id})"><i style="filter: invert(1);" class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i></a></li>
                         <li><a class="btn btn-danger text-white mt-2"><i onclick="removeFromFavorites(${favorites[i].id})" class="fas fa-minus-square"></i></a></li>
                     </ul>
                 </div>
             </div>
             <div class="card-body">
-                <a href="shop-single.html" class="h3 text-decoration-none">${favorites[i].pname}</a>
+                <div class="h3 text-decoration-none">${favorites[i].pname}</div>
+                <div class="seeMore" onclick="singlePage(${i})">See More...</div>
                 <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                     <li>${favorites[i].sizes}</li>
                 </ul>
@@ -341,12 +328,13 @@ function updateCart() {
                 <img class="card-img rounded-0 img-fluid" src="assets/img/shop_${cart[i].id}.jpg">
                 <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                     <ul class="list-unstyled">
-                        <li><a class="btn btn-danger text-white mt-2"><i onclick="removeAllFromCart(${cart[i].id})" class="fas fa-minus-square"></i></a></li>
+                        <li><a class="btn btn-danger text-white mt-2"><i onclick="removeFromCart(${cart[i].id}, _amount${cart[i].id}.value, true)" class="fas fa-minus-square"></i></a></li>
                     </ul>
                 </div>
             </div>
             <div class="card-body">
-                <a href="shop-single.html" class="h3 text-decoration-none">${cart[i].pname}</a>
+                <div class="h3 text-decoration-none">${cart[i].pname}</div>
+                <div class="seeMore" onclick="singlePage(${i})">See More...</div>
                 <ul class="list-inline pb-3">
                 <li class="list-inline-item">Size :
                 <li>${cart[i].sizes}</li>
@@ -361,22 +349,17 @@ function updateCart() {
     }
 }
 
-function checkOut(){
-    TotalCost = localStorage.getObj('total_cost');
+function checkOut(code){
     if (TotalCost <= 0) {
         msg = 'You have no items to pay for.'
         _aftercoupon.innerHTML = `&dollar;${TotalCost} <br>${msg}`;
         return;
     }
-    TotalCost = 0;
-    cart = [];
-    localStorage.setObj('total_cost', TotalCost);
-    localStorage.setObj('cart', cart);
+    checkCouponCode(code);
 }
 
 const coupon_codes = ['eyal100'];
 function checkCouponCode(code) {
-    console.log(code);
     let msg;
     TotalCost = localStorage.getObj('total_cost');
     coupon_codes.forEach(i => {
@@ -384,13 +367,20 @@ function checkCouponCode(code) {
             msg = "<p style='color:green;'>Coupon applied</p>"
             if (code = 'eyal100') {
                 TotalCost = TotalCost / 2;
+                localStorage.setObj('your_price', TotalCost);
             }
         } else {
+            localStorage.setObj('your_price', TotalCost);
             msg = "<p style='color:red;'>Invalid code.</p>"
         }
     });
     _aftercoupon.innerHTML = `&dollar;${TotalCost} <br>${msg}`;
 }
+
+function orderSummaryPage(product) {
+    location.href = `order-summary.html?order=${product}`;
+}
+
 
 // toast system
 
@@ -416,10 +406,8 @@ function initPage() {
         cart = [];
         localStorage.setItem('cart', JSON.stringify(cart));
     }
-    console.log("Cart: "+cart+"\rFavorites: "+favorites)
     updateCounters();
     searchProducts();
-    callToast("Init-done");
     updatePage();
 }
 
@@ -475,6 +463,7 @@ search.addEventListener("input", (event) => {
   searchProducts();
 });
 
+
 // sort system
 
 function sortBy() {
@@ -501,10 +490,7 @@ function sortBy() {
         });
     }
     updatePage();
-    console.log(products);
 }
-<<<<<<< Updated upstream
-=======
 
 function addToCartSinglePage(product) {
     let cart_index;
@@ -574,11 +560,8 @@ function removeFromCartSinglePage(product, amount, flag) {
         return;
     }
     if (flag = true) {
-        console.log('flag');
         cartCount -= cart[cart_index].amount;
-        console.log(cart[cart_index].amount);
         TotalCost = localStorage.getObj('total_cost');
-        console.log(`${cart[cart_index].price}+" "+ " " + ${cart[cart_index].amount} + " " + ${(TotalCost - (cart[cart_index].price * cart[cart_index].amount))}`);
         TotalCost = TotalCost - (cart[cart_index].price * cart[cart_index].amount);
         if (TotalCost < 0) {
             TotalCost = 0;
@@ -609,27 +592,9 @@ function removeFromCartSinglePage(product, amount, flag) {
     console.log("REMOVE FROM CART SUCCESS" + amount);
     callToast("REMOVE FROM CART SUCCESS" + amount);
     localStorage.setObj('cart', cart);
-    updateFavorites();
-    updateCounters();
-    updateCartSinglePage();
-}
-
-function removeFromFavoritesSinglePage(product) {
-    favorites = localStorage.getObj('favorites');
-    let favorites_index = favorites.findIndex(index => index.id == product);
-    console.log(product);
-    console.log(favorites_index);
-    if (favorites_index == -1) {
-        console.log("Favorites does not exists " +favorites_index);
-        return;
-    }
-    favorites.splice(favorites_index, 1);
-    console.log("REMOVE FROM FAVORITES SUCCESS");
-    callToast("REMOVE FROM FAVORITES SUCCESS");
-    favoritesCount--;
-    localStorage.setObj('favorites', favorites);
-    updateCounters();
     updateFavoritesSinglePage();
+    updateCartSinglePage();
+    updateCounters();
 }
 
 function initSinglePage() {
@@ -640,10 +605,11 @@ function initSinglePage() {
     _favoritesicon.innerHTML = favoritesCount;
 }
 
+
+
 function singlePage(i) {
     location.href = `shop-single.html?i=${i}`;
 }
-
 
 function updateFavoritesSinglePage() {
     updateCounters();
@@ -679,4 +645,19 @@ function updateFavoritesSinglePage() {
         </div>`;
     }
 }
->>>>>>> Stashed changes
+
+function removeFromFavoritesSinglePage(product) {
+    favorites = localStorage.getObj('favorites');
+    let favorites_index = favorites.findIndex(index => index.id == product);
+    if (favorites_index == -1) {
+        console.log("Favorites does not exists " +favorites_index);
+        return;
+    }
+    favorites.splice(favorites_index, 1);
+    console.log("REMOVE FROM FAVORITES SUCCESS");
+    callToast("REMOVE FROM FAVORITES SUCCESS");
+    favoritesCount--;
+    localStorage.setObj('favorites', favorites);
+    updateCounters();
+    initSinglePage();
+}
