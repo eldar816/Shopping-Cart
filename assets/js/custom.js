@@ -453,7 +453,7 @@ search_results.innerHTML = "";
     })
     .forEach((index) => {
       const li = document.createElement("li");
-      li.innerHTML = `<a href="./shop-single.html">${index.pname}`;
+      li.innerHTML = `<div class="seeMore" onclick="singlePage(${index.id})">${index.pname}</div>`;
       search_results.appendChild(li);
     });
 };
@@ -614,7 +614,7 @@ function initSinglePage() {
 
 
 function singlePage(i) {
-    location.href = `shop-single.html?i=${i}`;
+    location.href = `./shop-single.html?i=${i}`;
 }
 
 function updateFavoritesSinglePage() {
