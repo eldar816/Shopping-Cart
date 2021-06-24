@@ -253,7 +253,7 @@ function updatePage(param) {
         </div>
         <div class="card-body">
         <div class="h3 text-decoration-none">${products[i].pname}</div>
-        <div class="seeMore" onclick="singlePage(${i})">See More...</div>
+        <div class="seeMore" onclick="singlePage(${products[i].id})">See More...</div>
         <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
         <ul class="list-inline pb-3">
         <li class="list-inline-item">Size :
@@ -299,7 +299,7 @@ function updateFavorites() {
             </div>
             <div class="card-body">
                 <div class="h3 text-decoration-none">${favorites[i].pname}</div>
-                <div class="seeMore" onclick="singlePage(${i})">See More...</div>
+                <div class="seeMore" onclick="singlePage(${favorites[i].id})">See More...</div>
                 <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                     <li>${favorites[i].sizes}</li>
                 </ul>
@@ -334,7 +334,7 @@ function updateCart() {
             </div>
             <div class="card-body">
                 <div class="h3 text-decoration-none">${cart[i].pname}</div>
-                <div class="seeMore" onclick="singlePage(${i})">See More...</div>
+                <div class="seeMore" onclick="singlePage(${cart[i].id})">See More...</div>
                 <ul class="list-inline pb-3">
                 <li class="list-inline-item">Size :
                 <li>${cart[i].sizes}</li>
@@ -536,13 +536,13 @@ function updateCartSinglePage() {
                 <img class="card-img rounded-0 img-fluid" src="assets/img/shop_${cart[i].id}.jpg">
                 <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                     <ul class="list-unstyled">
-                        <li><a class="btn btn-danger text-white mt-2"><i onclick="removeFromCartSinglePage(${cart[i].id}, 1, true)" class="fas fa-minus-square"></i></a></li>
+                        <li><a class="btn btn-danger text-white mt-2"><i onclick="removeFromCartSinglePage(${cart[i].id, 1, true}, 1, true)" class="fas fa-minus-square"></i></a></li>
                     </ul>
                 </div>
             </div>
             <div class="card-body">
                 <div class="h3 text-decoration-none">${cart[i].pname}</div>
-                <div class="seeMore" onclick="singlePage(${i})">See More...</div>
+                <div class="seeMore" onclick="singlePage(${cart[i].id})">See More...</div>
                 <ul class="list-inline pb-3">
                 <li class="list-inline-item">Size :
                 <li>${cart[i].sizes}</li>
@@ -578,7 +578,6 @@ function removeFromCartSinglePage(product, amount, flag) {
        
         localStorage.setObj('total_cost', TotalCost);    
         localStorage.setObj('cart', cart);
-        updateCounters();
         updateCartSinglePage();
         return;
     }
@@ -637,7 +636,7 @@ function updateFavoritesSinglePage() {
             </div>
             <div class="card-body">
                 <div class="h3 text-decoration-none">${favorites[i].pname}</div>
-                <div class="seeMore" onclick="singlePage(${i})">See More...</div>
+                <div class="seeMore" onclick="singlePage(${favorites[i].id})">See More...</div>
                 <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                     <li>${favorites[i].sizes}</li>
                 </ul>
