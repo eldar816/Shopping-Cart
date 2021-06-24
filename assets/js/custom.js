@@ -1,6 +1,3 @@
-/*
-Author: Eldar
-*/
 
 const products = [{id : 0, pname : "Classic Long Sleeve Shirt", price : 50, sizes : "S/M/L/XL/XXL", description : "test1", stars : 4, in_cart : false, in_favorites : false, amount : 0, featured : true, gender : 0}, 
   {id : 1, pname : "Golf Casual Shirt", price : 100, sizes : "S/M/L/XL/XXL", description : "test2", stars : 3, in_cart : false, in_favorites : false, amount : 0, featured : false, gender : 0}, 
@@ -34,6 +31,7 @@ let favCheck = document.getElementById("favsShow");
 let totalCost = 0;
 let YourPrice;
 // favorites and cart functionality
+
 
 function addToCart(product, amount) {
         let cart_index;
