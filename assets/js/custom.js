@@ -472,7 +472,7 @@ search_results.innerHTML = "";
     })
     .forEach((index) => {
       const li = document.createElement("li");
-      li.innerHTML = `<a href="./shop-single.html">${index.pname}`;
+      li.innerHTML = `<a href="./shop-single.html?i=${index.id}">${index.pname}`;
       search_results.appendChild(li);
     });
 };
