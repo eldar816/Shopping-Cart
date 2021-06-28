@@ -1,11 +1,2 @@
-# IDAN + GAL FILES
-    asset folder.
-
-
-# to do for tuesday
-    fix removefromfavorites - DONE
-    add dynamic stars presentation 
-    add checkout cart
-    connect singlepage to mainpage
-    add total cost + total amount
-    add coupon code eyal100 for 100% off
+# Shopping Cart - Vanilla JS
+    everything written in vanilla js, css and html - a good practice for js fundementals before learning jquery, ajax, classes
