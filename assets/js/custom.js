@@ -1,3 +1,6 @@
+/*
+Author: Eldar
+*/
 
 const products = [{id : 0, pname : "Classic Long Sleeve Shirt", price : 50, sizes : "S/M/L/XL/XXL", description : "test1", stars : 4, in_cart : false, in_favorites : false, amount : 0, featured : true, gender : 0}, 
   {id : 1, pname : "Golf Casual Shirt", price : 100, sizes : "S/M/L/XL/XXL", description : "test2", stars : 3, in_cart : false, in_favorites : false, amount : 0, featured : false, gender : 0}, 
@@ -26,14 +29,14 @@ var favorites = [];
 let cartCount = 0;
 let favoritesCount = 0;
 let amount = 0;
-let cartCheck = document.getElementById("cartShow");
-let favCheck = document.getElementById("favsShow");
-let totalCost = 0;
-let YourPrice;
+// let totalCost = 0;
+let YourPrice = 0;
+let single_page = false;
 // favorites and cart functionality
-
-
+let favCheck = document.getElementById("favsShow");
+let cartCheck = document.getElementById("cartShow");
 function addToCart(product, amount) {
+        updateCounters();
         let cart_index;
         cart = localStorage.getObj('cart');
         if (amount < 1 || amount == null) {
@@ -50,6 +53,7 @@ function addToCart(product, amount) {
                 cart_index = products.findIndex(index => index.id == product)
                 cart.push(products[cart_index]);
                 cart_index = cart.findIndex(index => index.id == product);
+                cart[cart_index].amount = 0; 
                 cart[cart_index].amount += amount; 
             } else {
                 cart[cart_index].amount += amount; 
@@ -62,7 +66,12 @@ function addToCart(product, amount) {
         cartCount += amount;
         console.log("ADD TO CART SUCCESS " + amount); 
         callToast(cart[cart_index].pname + " added to cart " + amount);
-    updatePage(); 
+    updateCounters();
+    if (single_page) {
+        initSinglePage();
+    } else {
+        updatePage(); 
+    }
 }
 
 function removeFromCart(product, amount, flag) {
@@ -89,7 +98,11 @@ function removeFromCart(product, amount, flag) {
        
         localStorage.setObj('total_cost', TotalCost);    
         localStorage.setObj('cart', cart);
-        updatePage();
+        if (single_page) {
+            initSinglePage();
+        } else {
+            updatePage(); 
+        }
         return;
     }
     if (cart[cart_index].amount <= 1) {
@@ -108,7 +121,11 @@ function removeFromCart(product, amount, flag) {
     console.log("REMOVE FROM CART SUCCESS" + amount);
     callToast("REMOVE FROM CART SUCCESS" + amount);
     localStorage.setObj('cart', cart);
-    updatePage();
+    if (single_page) {
+        initSinglePage();
+    } else {
+        updatePage(); 
+    }
 }
 
 function removeAllFromCart(product, flag) {
@@ -215,6 +232,7 @@ function filterByCategory(param) {
 
 // update systems 
 function updatePage(param) {
+    single_page = false;
     let FavoritesCheck;
     let FeaturedCheck;
     _res.innerHTML = "";
@@ -251,7 +269,7 @@ function updatePage(param) {
         </div>
         <div class="card-body">
         <div class="h3 text-decoration-none">${products[i].pname}</div>
-        <div class="seeMore" onclick="singlePage(${products[i].id})">See More...</div>
+        <div class="seeMore" onclick="singlePage(${i})">See More...</div>
         <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
         <ul class="list-inline pb-3">
         <li class="list-inline-item">Size :
@@ -297,7 +315,7 @@ function updateFavorites() {
             </div>
             <div class="card-body">
                 <div class="h3 text-decoration-none">${favorites[i].pname}</div>
-                <div class="seeMore" onclick="singlePage(${favorites[i].id})">See More...</div>
+                <div class="seeMore" onclick="singlePage(${i})">See More...</div>
                 <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                     <li>${favorites[i].sizes}</li>
                 </ul>
@@ -315,6 +333,9 @@ function updateFavorites() {
 function updateCart() {
     cartCheck.innerHTML = "";
     TotalCost = localStorage.getObj('total_cost');
+    if (TotalCost == null || TotalCost == undefined) {
+        TotalCost = 0;
+    }
     _totalcost.innerHTML = "&dollar;"+TotalCost;
     _aftercoupon.innerHTML = "&dollar;"+TotalCost;
     cart = localStorage.getObj('cart');
@@ -326,13 +347,13 @@ function updateCart() {
                 <img class="card-img rounded-0 img-fluid" src="assets/img/shop_${cart[i].id}.jpg">
                 <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                     <ul class="list-unstyled">
-                        <li><a class="btn btn-danger text-white mt-2"><i onclick="removeFromCart(${cart[i].id}, _amount${cart[i].id}.value, true)" class="fas fa-minus-square"></i></a></li>
+                        <li><a class="btn btn-danger text-white mt-2"><i onclick="removeFromCart(${cart[i].id}, ${cart[i].amount}, true)" class="fas fa-minus-square"></i></a></li>
                     </ul>
                 </div>
             </div>
             <div class="card-body">
                 <div class="h3 text-decoration-none">${cart[i].pname}</div>
-                <div class="seeMore" onclick="singlePage(${cart[i].id})">See More...</div>
+                <div class="seeMore" onclick="singlePage(${i})">See More...</div>
                 <ul class="list-inline pb-3">
                 <li class="list-inline-item">Size :
                 <li>${cart[i].sizes}</li>
@@ -451,7 +472,7 @@ search_results.innerHTML = "";
     })
     .forEach((index) => {
       const li = document.createElement("li");
-      li.innerHTML = `<div class="seeMore" onclick="singlePage(${index.id})">${index.pname}</div>`;
+      li.innerHTML = `<a href="./shop-single.html">${index.pname}`;
       search_results.appendChild(li);
     });
 };
@@ -490,120 +511,13 @@ function sortBy() {
     updatePage();
 }
 
-function addToCartSinglePage(product) {
-    let cart_index;
-    cart = localStorage.getObj('cart');
-    let amount = 1;
-    if (cart == null || cart == undefined) {
-        cart = [];
-        cart.push(products[product]);
-        cart_index = cart.findIndex(index => index == products[product]);
-        cart[cart_index].amount += 1;
-    } else {
-        cart_index = cart.findIndex(index => index.id == products[product].id);
-        if (cart_index == -1) {
-            cart.push(products[product]);
-            cart_index = cart.findIndex(index => index.id == products[product].id);
-        }
-        cart[cart_index].amount += 1;
-    }
-    cartCount++;
-    TotalCost = localStorage.getObj('total_cost');
-    TotalCost = cart[cart_index].price + TotalCost;
-    localStorage.setObj('total_cost', TotalCost);
-    localStorage.setObj('cart', cart);
-    console.log("ADD TO CART SUCCESS ");
-    callToast(cart[cart_index].pname + " added to cart " + 1);    
-    updateCartSinglePage();
-}
-
-function updateCartSinglePage() {
-    updateCounters();
-    TotalCost = localStorage.getObj('total_cost');
-    _totalcost.innerHTML = "&dollar;"+TotalCost;
-    _aftercoupon.innerHTML = "&dollar;"+TotalCost;
-    _carticon.innerHTML = cartCount;
-    _favoritesicon.innerHTML = favoritesCount;
-    cartCheck.innerHTML = "";
-    cart = localStorage.getObj('cart');
-    for (let i = 0; i < cart.length; i++) {
-        cartCheck.innerHTML += `<div class="col-md-4">
-        <div class="card mb-4 product-wap rounded-0">
-            <div class="card rounded-0">
-            <p style="color:white; text-align:center" class="bg-dark">Count:${cart[i].amount}</p>
-                <img class="card-img rounded-0 img-fluid" src="assets/img/shop_${cart[i].id}.jpg">
-                <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
-                    <ul class="list-unstyled">
-                        <li><a class="btn btn-danger text-white mt-2"><i onclick="removeFromCartSinglePage(${cart[i].id, 1, true}, 1, true)" class="fas fa-minus-square"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="h3 text-decoration-none">${cart[i].pname}</div>
-                <div class="seeMore" onclick="singlePage(${cart[i].id})">See More...</div>
-                <ul class="list-inline pb-3">
-                <li class="list-inline-item">Size :
-                <li>${cart[i].sizes}</li>
-            </ul>
-        </div>
-                <ul style="display = inline-block;" class="list-unstyled d-flex justify-content-center mb-1">
-                <li><i class="text-warning fa fa-star"></i></li>${cart[i].stars}
-                </ul>
-                <p class="text-center mb-0">&dollar;${cart[i].price}</p>
-            </div>
-        </div>`;
-    }
-}
-
-function removeFromCartSinglePage(product, amount, flag) {
-    cart = localStorage.getObj('cart');
-    let cart_index = cart.findIndex(index => index.id == product);
-    if (cart[cart_index] == undefined || cart[cart_index] == -1) {
-        callToast("There are no items to remove");
-        console.log("There are no items to remove");
-        return;
-    }
-    if (flag = true) {
-        cartCount -= cart[cart_index].amount;
-        TotalCost = localStorage.getObj('total_cost');
-        TotalCost = TotalCost - (cart[cart_index].price * cart[cart_index].amount);
-        if (TotalCost < 0) {
-            TotalCost = 0;
-        }
-        cart.splice(cart_index, 1);
-        console.log("REMOVE FROM CART SUCCESS" );
-        callToast("REMOVE FROM CART SUCCESS");
-       
-        localStorage.setObj('total_cost', TotalCost);    
-        localStorage.setObj('cart', cart);
-        updateCartSinglePage();
-        return;
-    }
-    if (cart[cart_index].amount <= 1) {
-        cart.splice(cart_index, 1);
-    } else {
-        cart_index = cart.findIndex(index => index.id == products[product].id);
-        cart[cart_index].amount -= amount;
-    }
-    cartCount -= amount;
-    if (cartCount < 0) {
-        cartCount = 0;
-    }
-    TotalCost = localStorage.getObj('total_cost');
-    TotalCost = TotalCost - (cart[cart_index].price * amount);
-    localStorage.setObj('total_cost', TotalCost);    
-    console.log("REMOVE FROM CART SUCCESS" + amount);
-    callToast("REMOVE FROM CART SUCCESS" + amount);
-    localStorage.setObj('cart', cart);
-    updateFavoritesSinglePage();
-    updateCartSinglePage();
-    updateCounters();
-}
 
 function initSinglePage() {
-    updateCartSinglePage();
-    updateFavoritesSinglePage();
+    single_page = true;
+    updateCart();
+    updateFavorites();
     updateCounters();
+    document.getElementById('amount-handler').innerHTML = `<input class="__amount" id="_amount${i}" type=number min=1 max=999 value=1 placeholder="Amount">`;
     _carticon.innerHTML = cartCount;
     _favoritesicon.innerHTML = favoritesCount;
 }
@@ -611,56 +525,6 @@ function initSinglePage() {
 
 
 function singlePage(i) {
-    location.href = `./shop-single.html?i=${i}`;
-}
-
-function updateFavoritesSinglePage() {
-    updateCounters();
-    favCheck.innerHTML = "";
-    favorites = localStorage.getObj('favorites');
-    for (let i = 0; i < favorites.length; i++) {
-        favorites = localStorage.getObj('favorites');
-        favCheck.innerHTML += `<div class="col-md-4">
-        <div class="card mb-4 product-wap rounded-0">
-            <div class="card rounded-0">
-                <img class="card-img rounded-0 img-fluid" src="assets/img/shop_${favorites[i].id}.jpg">
-                <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
-                    <ul class="list-unstyled">
-                
-                        <li><a class="btn btn-success text-white mt-2" onclick="addToCart(${favorites[i].id})"><i style="filter: invert(1);" class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i></a></li>
-                        <li><a class="btn btn-danger text-white mt-2"><i onclick="removeFromFavoritesSinglePage(${favorites[i].id})" class="fas fa-minus-square"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="h3 text-decoration-none">${favorites[i].pname}</div>
-                <div class="seeMore" onclick="singlePage(${favorites[i].id})">See More...</div>
-                <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                    <li>${favorites[i].sizes}</li>
-                </ul>
-                <ul style="display = inline-block;" class="list-unstyled d-flex justify-content-center mb-1">
-                <li><i class="text-warning fa fa-star"></i></li>${favorites[i].stars}
-                </ul>
-                <p class="text-center mb-0">&dollar;${favorites[i].price}</p>
-    
-            </a>
-            </div>
-        </div>`;
-    }
-}
-
-function removeFromFavoritesSinglePage(product) {
-    favorites = localStorage.getObj('favorites');
-    let favorites_index = favorites.findIndex(index => index.id == product);
-    if (favorites_index == -1) {
-        console.log("Favorites does not exists " +favorites_index);
-        return;
-    }
-    favorites.splice(favorites_index, 1);
-    console.log("REMOVE FROM FAVORITES SUCCESS");
-    callToast("REMOVE FROM FAVORITES SUCCESS");
-    favoritesCount--;
-    localStorage.setObj('favorites', favorites);
-    updateCounters();
+    location.href = `shop-single.html?i=${i}`;
     initSinglePage();
 }
