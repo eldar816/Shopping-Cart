@@ -1,11 +1,4 @@
-# IDAN + GAL FILES
-    asset folder.
-
-
-# to do for tuesday
-    fix removefromfavorites - DONE
-    add dynamic stars presentation 
-    add checkout cart
-    connect singlepage to mainpage
-    add total cost + total amount
-    add coupon code eyal100 for 100% off
+# Vanilla JS First project - Shopping cart
+    everything was written in vanilla js.
+# Live Demo
+    https://eldar816.github.io/Shopping-Cart/
