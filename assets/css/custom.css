@@ -96,3 +96,25 @@ input::-webkit-inner-spin-button {
 #_carticon, #_favoritesicon{
   cursor: pointer;
 }
+
+.modal-open .container-fluid, .modal-open  .container {
+  -webkit-filter: blur(1px);
+  -moz-filter: blur(1px);
+  -o-filter: blur(1px);
+    -ms-filter: blur(1px);
+    filter: blur(2px);
+}
+
+.myBG{
+  border-radius: 15px;
+  padding: 10px;
+  background-color: white;
+  min-height: 50vh;
+}
+
+.myBG2{
+  border-radius: 15px;
+  padding: 10px;
+  background-color: white;
+  min-height: 10vh;
+}
